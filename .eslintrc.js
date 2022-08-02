@@ -5,16 +5,18 @@ module.exports = {
   },
   extends: [
     'plugin:react/recommended',
+    'airbnb-typescript',
     'prettier',
-    // 'plugin:import/errors',
-    // 'plugin:import/warnings',
-    // 'plugin:import/typescript',
+    'plugin:import/errors',
+    'plugin:import/warnings',
+    'plugin:import/typescript',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
     },
+    project: './tsconfig.eslint.json',
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
