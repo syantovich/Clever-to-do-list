@@ -25,5 +25,6 @@ module.exports = {
     //   { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
     // ],
     'prettier/prettier': ['error'],
+    'no-console': 'off',
   },
 };
