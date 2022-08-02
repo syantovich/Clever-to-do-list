@@ -1,11 +1,20 @@
 import { Button, TextField, Grid } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-
+import {
+  AuthError,
+  getAuth,
+  GoogleAuthProvider,
+  // GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  // signInWithPopup,
+} from 'firebase/auth';
 import { useDispatch } from 'react-redux';
 import { login } from '../../store/user/userSlice';
 
 import './SignIn.css';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
@@ -16,6 +25,39 @@ const SignIn = () => {
   useEffect(() => {
     console.log(`${email} ${password}`);
   }, [email, password]);
+  const authWithPass = () => {
+    let auth = getAuth();
+    const promise = signInWithEmailAndPassword(auth, email, password);
+    toast.promise(promise, {
+      pending: 'Loading',
+      success: 'OK',
+    });
+    promise
+      .then(() => {
+        dispatch(login({ name: email, email }));
+        navigate('../');
+      })
+      .catch((err: AuthError) => {
+        toast.error(err.message);
+      });
+  };
+  const googleAuth = () => {
+    const auth = getAuth();
+    const google = new GoogleAuthProvider();
+
+    signInWithPopup(auth, google)
+      .then(result => {
+        console.log(result);
+        dispatch(
+          login({ email: result.user.email, name: result.user.displayName }),
+        );
+        navigate('../');
+        toast.success('Entered');
+      })
+      .catch((error: AuthError) => {
+        toast.error(error.message);
+      });
+  };
   return (
     <section className={'center'}>
       <Grid
@@ -47,15 +89,22 @@ const SignIn = () => {
             }}
           />
         </Grid>
-        <Grid item xs={12}>
-          {' '}
+        <Grid item xs={6}>
           <Button
             variant="contained"
             onClick={() => {
-              dispatch(login({ name: 'Alexey', email }));
-              navigate('../');
+              authWithPass();
             }}>
-            Login
+            Sign In
+          </Button>
+        </Grid>
+        <Grid item xs={6}>
+          <Button
+            variant="contained"
+            onClick={() => {
+              googleAuth();
+            }}>
+            Continue with Google
           </Button>
         </Grid>
         <Grid item xs={12}>
