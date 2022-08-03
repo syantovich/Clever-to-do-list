@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Stack } from '@mui/material';
 import { currDayInMonth, dayInWeek, daysInMonth } from '../../constants';
-import CalendarDay from '../CalendarDay/CalendarDay';
-import AliceCarousel from 'react-alice-carousel';
+// import CalendarDay from '../CalendarDay/CalendarDay';
+// import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
 
 const Calendar = () => {
