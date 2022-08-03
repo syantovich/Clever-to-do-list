@@ -11,7 +11,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from 'firebase/auth';
-// import { collection, getDocs, getFirestore } from '@firebase/firestore';
+import { db } from '../../services/db';
 
 import * as validReg from '../../regexp/validators';
 import { toast } from 'react-toastify';
@@ -56,49 +56,52 @@ const SignUp = () => {
       setErrorConfirmPass(true);
     }
   }, [confirmPass]);
-  const createUser = () => {
+  const createUser = (): void => {
     if (!errorName && !errorEmail && !errorConfirmPass && !errorPassword) {
       const auth = getAuth();
-      // const db = getFirestore();
-      // try {
-      //   let querySnapshot = await getDocs(collection(db, 'usersinfo'));
-      //   querySnapshot.forEach(doc => {
-      //     console.log(doc);
-      //   });
-      // } catch (e) {
-      //   console.log(e);
-      // }
-
       let promise = createUserWithEmailAndPassword(auth, email, password);
-      toast.promise(promise, {
-        pending: 'Loading',
-        success: 'OK',
-      });
-      promise
+      toast
+        .promise(promise, {
+          pending: 'Loading',
+          success: 'OK',
+        })
         .then(result => {
           console.log(result);
+
           toast.success('User created');
-          dispatch(login({ name, email }));
+          dispatch(login({ name, email, uid: result.user.uid }));
           navigate('../');
+          return result;
         })
+        .then(result => db.setUserInfo(name, email, result.user.uid))
         .catch((error: AuthError) => toast.error(error.message));
     } else {
       toast.error('You need to check all areas');
     }
   };
-  const googleAuth = () => {
+  const googleAuth = (): void => {
     const auth = getAuth();
     const google = new GoogleAuthProvider();
-
     signInWithPopup(auth, google)
       .then(result => {
         console.log(result);
-        dispatch(
-          login({ email: result.user.email, name: result.user.displayName }),
-        );
+        let obj = {
+          email: result.user.email,
+          name: result.user.displayName,
+          uid: result.user.uid,
+        };
+        dispatch(login(obj));
         navigate('../');
         toast.success('Entered');
+        return result;
       })
+      .then(result =>
+        db.setUserInfo(
+          result.user.displayName,
+          result.user.email,
+          result.user.uid,
+        ),
+      )
       .catch((error: AuthError) => {
         toast.error(error.message);
       });
@@ -111,13 +114,15 @@ const SignUp = () => {
         spacing={2}
         direction={'column'}
         justifyContent="center"
-        alignItems="center">
+        alignItems="center"
+        className={'signup'}>
         <Grid item xs={12}>
           <TextField
             error={errorName}
             id="input_name"
             label="Name"
             variant="outlined"
+            className={'inputText'}
             value={name}
             onChange={value => {
               setName(value.target.value);
@@ -129,6 +134,7 @@ const SignUp = () => {
             error={errorEmail}
             id="input_email"
             label="Email"
+            className={'inputText'}
             variant="outlined"
             value={email}
             onChange={value => {
@@ -142,6 +148,7 @@ const SignUp = () => {
             id="input_password"
             label="password"
             variant="outlined"
+            className={'inputText'}
             type={'password'}
             value={password}
             onChange={value => {
@@ -155,6 +162,7 @@ const SignUp = () => {
             id="input_confirm_password"
             label="Confirm password"
             variant="outlined"
+            className={'inputText'}
             type={'password'}
             value={confirmPass}
             onChange={value => {

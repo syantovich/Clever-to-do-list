@@ -2,9 +2,13 @@ import React from 'react';
 import './Welcome.css';
 import { Grid, Button } from '@mui/material';
 import planImg from '../../img/plans.jpg';
-import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
+import { userSelector } from '../../store/user/selector';
+import { useNavigate } from 'react-router-dom';
 
 const Welcome = () => {
+  const { name } = useSelector(userSelector);
+  const navigator = useNavigate();
   return (
     <div className={'wrapper_welcome'}>
       <Grid
@@ -24,8 +28,11 @@ const Welcome = () => {
             variant="outlined"
             className={'explore'}
             onClick={() => {
-              console.log('aaa');
-              toast.warn('aaa');
+              if (name) {
+                navigator('plans');
+              } else {
+                navigator('signin');
+              }
             }}>
             Explore
           </Button>

@@ -5,6 +5,8 @@ import SignIn from '../../pages/SignIn/SignIn';
 import SignUp from '../../pages/SignUp/SignUp';
 import Welcome from '../../pages/Welcome/Welcome';
 import { userSelector } from '../../store/user/selector';
+import UserProfile from '../../pages/UserProfile/UserProfile';
+import Plans from '../../pages/Plans/Plans';
 
 const Main = () => {
   const { name } = useSelector(userSelector);
@@ -18,6 +20,8 @@ const Main = () => {
               <Route path="signup" element={<SignUp />} />
             </>
           )}
+          <Route path="/profile" element={<UserProfile />} />
+          <Route path="plans" element={<Plans />} />
           <Route path="/" element={<Welcome />} />
         </Route>
       </Routes>

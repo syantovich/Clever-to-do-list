@@ -1,15 +1,13 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { userSelector } from '../../store/user/selector';
 import { Grid, Button } from '@mui/material';
-import { logout } from '../../store/user/userSlice';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Header.css';
 import logo from '../../img/Time Square.svg';
 
 const Header = () => {
   const { name } = useSelector(userSelector);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   return (
     <header>
@@ -25,21 +23,16 @@ const Header = () => {
             <img src={logo} alt="logo" height={'100%'} /> Plan your day
           </div>
         </Grid>
+        <Grid item xs={4}>
+          <Button>
+            <Link to={'plans'}>Plans</Link>
+          </Button>
+        </Grid>
         {name ? (
           <Grid item xs={4}>
             <Grid container spacing={2}>
               <Grid item xs={5}>
-                {name}
-              </Grid>
-              <Grid item xs={5}>
-                <Button
-                  variant={'text'}
-                  onClick={() => {
-                    dispatch(logout());
-                    navigate('./');
-                  }}>
-                  Sign Out
-                </Button>
+                <Link to="profile">{name}</Link>
               </Grid>
             </Grid>
           </Grid>

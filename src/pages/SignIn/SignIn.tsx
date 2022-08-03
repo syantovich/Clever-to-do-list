@@ -1,16 +1,15 @@
 import { Button, TextField, Grid } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   AuthError,
   getAuth,
   GoogleAuthProvider,
-  // GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
-  // signInWithPopup,
 } from 'firebase/auth';
 import { useDispatch } from 'react-redux';
 import { login } from '../../store/user/userSlice';
+import { db } from '../../services/db';
 
 import './SignIn.css';
 import { Link, useNavigate } from 'react-router-dom';
@@ -22,19 +21,24 @@ const SignIn = () => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
-  useEffect(() => {
-    console.log(`${email} ${password}`);
-  }, [email, password]);
   const authWithPass = () => {
     let auth = getAuth();
     const promise = signInWithEmailAndPassword(auth, email, password);
-    toast.promise(promise, {
-      pending: 'Loading',
-      success: 'OK',
-    });
-    promise
-      .then(() => {
-        dispatch(login({ name: email, email }));
+    toast
+      .promise(promise, {
+        pending: 'Loading',
+        success: 'OK',
+      })
+      .then(result => db.getUserInfo(result.user.uid))
+      .then(res => {
+        let result = res.data();
+        console.log(result);
+        if (result) {
+          dispatch(
+            login({ name: result.name, email: result.email, uid: result.uid }),
+          );
+        }
+
         navigate('../');
       })
       .catch((err: AuthError) => {
@@ -49,7 +53,11 @@ const SignIn = () => {
       .then(result => {
         console.log(result);
         dispatch(
-          login({ email: result.user.email, name: result.user.displayName }),
+          login({
+            email: result.user.email,
+            name: result.user.displayName,
+            uid: result.user.uid,
+          }),
         );
         navigate('../');
         toast.success('Entered');
@@ -65,12 +73,14 @@ const SignIn = () => {
         spacing={2}
         direction={'column'}
         justifyContent="center"
-        alignItems="center">
+        alignItems="center"
+        className={'signin'}>
         <Grid item xs={12}>
           <TextField
             id="input_email"
             label="Email"
             variant="outlined"
+            className={'inputText'}
             value={email}
             onChange={value => {
               setEmail(value.target.value);
@@ -83,6 +93,7 @@ const SignIn = () => {
             label="password"
             variant="outlined"
             type={'password'}
+            className={'inputText'}
             value={password}
             onChange={value => {
               setPassword(value.target.value);
