@@ -1,0 +1,28 @@
+.calendar_wrapper{
+    width:100vw;
+    box-sizing: border-box;
+    padding-bottom: 100px;
+}
+.alice-carousel{
+    padding: 0 60px;
+    position: relative;
+    box-sizing: border-box;
+}
+.alice-carousel__prev-btn{
+    width: auto!important;
+    position: absolute;
+    left: 20px;
+    top:5px;
+    font-size: 40px;
+
+}
+.alice-carousel__next-btn{
+    width: auto!important;
+    font-size: 40px;
+    position: absolute;
+    top: 5px;
+    right: 20px;
+}
+.alice-carousel__wrapper{
+    height: 90px!important;
+}

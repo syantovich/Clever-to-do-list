@@ -27,7 +27,9 @@ const CalendarDay = ({
         justifyContent="center"
         alignItems="center"
         className={`day_element ${isSelected ? 'selected' : ''}`}
-        onClick={() => onClick(selected)}>
+        onClick={() => {
+          onClick(selected);
+        }}>
         <Grid item xs={12}>
           {dayOfMonth}
         </Grid>
@@ -38,7 +40,7 @@ const CalendarDay = ({
           {dayOfWeek}
         </Grid>
         <Grid item xs={12} className={`month`}>
-          {MonthArr[month]}
+          {MonthArr[month % 12]}
         </Grid>
       </Grid>
     </Stack>

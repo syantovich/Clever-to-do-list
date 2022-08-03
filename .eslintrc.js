@@ -22,10 +22,6 @@ module.exports = {
   },
   plugins: ['react', '@typescript-eslint', 'prettier'],
   rules: {
-    // 'react/jsx-filename-extension': [
-    //   2,
-    //   { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
-    // ],
     'prettier/prettier': ['error'],
     'no-console': 'off',
   },
