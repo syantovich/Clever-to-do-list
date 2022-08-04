@@ -9,12 +9,16 @@
   animation: gradient 10s infinite linear;
   background-size: 400%;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   position: absolute;
   top: 0;
   left: 0;
   display: flex;
   flex-direction: column;
+}
+body {
+  padding: 17px;
+  overflow-x: hidden;
 }
 
 @keyframes gradient {

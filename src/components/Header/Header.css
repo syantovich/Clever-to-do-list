@@ -1,6 +1,6 @@
 header {
   box-sizing: border-box;
-  padding: 30px 40px;
+  padding: 30px 40px 10px 40px;
 }
 
 header .logo {

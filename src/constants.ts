@@ -13,6 +13,11 @@ export const MonthArr = [
   'Nov',
   'Dec',
 ];
+export const importance = [
+  { value: 'not_matter', label: "doesn't matter" },
+  { value: 'important', label: 'important' },
+  { value: 'very_important', label: 'very important' },
+];
 export function daysInMonth(month: number, year: number): number {
   return new Date(year, month, 0).getDate();
 }

@@ -5,26 +5,32 @@ import CalendarDay from '../CalendarDay/CalendarDay';
 import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
 import './Calendar.css';
+import { db } from '../../services/db';
+import { ICalendarProps } from '../../Modal/ICalendarProps';
 
-const Calendar = () => {
+const Calendar = ({
+  selected,
+  setPlans,
+  plans,
+  setSelected,
+}: ICalendarProps) => {
   const [nextMonth, setNextMonth] = useState(new Date().getMonth());
   const [days, setDays] = useState<string[]>([]);
   const [arrOfDays, setArrOfDays] = useState<JSX.Element[]>([]);
-  const [selectedDate, setSelectedDate] = useState(
-    new Date().toISOString().slice(0, 10),
-  );
   const [indexActive, setIndexActive] = useState(0);
   const update = (i: number, month: number, newYear: number): JSX.Element => {
-    let selected = new Date(newYear, month, i + 1).toISOString().slice(0, 10);
+    let selectedDate = new Date(newYear, month, i + 1)
+      .toISOString()
+      .slice(0, 10);
     return (
       <CalendarDay
         dayOfWeek={dayInWeek(newYear, month, i)}
         dayOfMonth={i}
-        selected={selected}
-        isSelected={selected === selectedDate}
+        selected={selectedDate}
+        isSelected={selectedDate === selected}
         month={month}
         key={`${month} ${i}`}
-        onClick={setSelectedDate}
+        onClick={setSelected}
       />
     );
   };
@@ -32,17 +38,30 @@ const Calendar = () => {
     let nextMonthArr: JSX.Element[] = [];
     const addingDays: string[] = [];
     let year = new Date().getFullYear();
-
+    let copyPlans = { ...plans };
     for (
       let i = nextMonth === new Date().getMonth() ? currDayInMonth() : 1;
       i <= daysInMonth(nextMonth + 1, year);
       i++
     ) {
-      addingDays.push(
-        new Date(year, nextMonth, i + 1).toISOString().slice(0, 10),
-      );
+      let date = new Date(year, nextMonth, i + 1).toISOString().slice(0, 10);
+      addingDays.push(date);
+      if (!copyPlans[date.slice(0, 7)]) {
+        copyPlans[date.slice(0, 7)] = {};
+      }
+      copyPlans[date.slice(0, 7)][date.slice(8)] = {};
       nextMonthArr.push(update(i, nextMonth, year));
     }
+
+    const key = new Date(year, nextMonth + 1).toISOString().slice(0, 7);
+    db.getPlansOnMonth(key).then(result => {
+      result.forEach(doc => {
+        copyPlans[key][doc.id] = doc.data();
+      });
+
+      console.log(copyPlans);
+      setPlans(copyPlans);
+    });
     setNextMonth(nextMonth + 1);
     setArrOfDays(arrOfDays.concat(nextMonthArr));
     setDays(days.concat(addingDays));
@@ -56,7 +75,7 @@ const Calendar = () => {
       arr[i] = update(day, month - 1, newYear);
     }
     setArrOfDays(arr);
-  }, [selectedDate]);
+  }, [selected]);
 
   useEffect(() => {
     addDays();
@@ -75,9 +94,9 @@ const Calendar = () => {
         keyboardNavigation
         items={arrOfDays}
         onSlideChanged={e => {
-          if (days.length - 10 > e.item) {
-            addDays();
+          if (days.length - 30 < e.item) {
             setIndexActive(e.item);
+            addDays();
           }
         }}
       />
