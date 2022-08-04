@@ -22,10 +22,10 @@ const ElementOfListPlans = ({
   plans,
   setPlans,
   isFinished,
+  date,
 }: ElementOfListPlansType) => {
-  const date = new Date().toISOString().slice(0, 16);
-  const dateStart = `${addingDate}T${timeStart}`;
-  const dateEnd = `${addingDate}T${timeEnd}`;
+  const [dateStart] = useState(`${addingDate}T${timeStart}`);
+  const [dateEnd] = useState(`${addingDate}T${timeEnd}`);
   const [isEnd, setIsEnd] = useState(isFinished);
   const setFinished = (is: boolean) => {
     toast
@@ -57,7 +57,7 @@ const ElementOfListPlans = ({
       className={`${important} ${
         date > dateStart && date < dateEnd ? 'now' : ''
       }`}
-      disabled={dateEnd < date}>
+      disabled={`${addingDate}T${timeEnd}` < date}>
       <AccordionSummary
         expandIcon={<ExpandMore />}
         aria-controls="panel1a-content"

@@ -10,14 +10,14 @@ const ListPlans = ({ plans, setPlans, selected }: ListPlansType) => {
   useEffect(() => {
     // console.log(selected.slice(0, 7));
     // console.log(plans);
-    let sortedArr: IinfoPlan[] = Object.values(
+    let arrOfValues: IinfoPlan[] = Object.values(
       plans[selected.slice(0, 7)][selected.slice(8)],
     );
-    sortedArr.sort((a, b) => {
+    let sortedArr = arrOfValues.sort((a, b) => {
       if (a.timeStart === b.timeStart) {
-        return b.timeEnd > a.timeEnd ? -1 : -1;
+        return b.timeEnd > a.timeEnd ? -1 : 1;
       } else {
-        return b.timeStart > a.timeStart ? -1 : -1;
+        return b.timeStart > a.timeStart ? -1 : 1;
       }
     });
     setElements(
@@ -29,6 +29,11 @@ const ListPlans = ({ plans, setPlans, selected }: ListPlansType) => {
             setPlans={setPlans}
             addingDate={e.date}
             key={e.id}
+            date={
+              new Date().toISOString().slice(0, 10) +
+              'T' +
+              new Date().toLocaleString().slice(12, 17)
+            }
           />
         );
       }),

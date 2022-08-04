@@ -9,4 +9,5 @@ export type ElementOfListPlansType = {
   plans: any;
   setPlans: any;
   isFinished: boolean;
+  date: string;
 };
