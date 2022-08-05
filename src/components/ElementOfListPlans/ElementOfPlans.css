@@ -1,0 +1,29 @@
+.wrapper_plans_content .important {
+  background-color: #cccc40;
+  border: 2px solid #cccc40;
+}
+.wrapper_plans_content .very_important {
+  background-color: #8e271f;
+  border: 2px solid #8e271f;
+}
+.wrapper_plans_content .not_matter {
+  background-color: green;
+  border: 2px solid green;
+}
+.wrapper_plans_content .element_of_plan {
+  padding: 10px 20px;
+  border-radius: 5px;
+  position: relative;
+}
+.wrapper_plans_content .element_of_plan .icon_edit {
+  opacity: 0;
+}
+.wrapper_plans_content .element_of_plan:hover .icon_edit {
+  opacity: 1;
+}
+.wrapper_plans_content .element_of_plan:hover {
+  cursor: pointer;
+}
+.opacity_element {
+  opacity: 0.5;
+}

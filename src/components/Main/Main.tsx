@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import SignIn from '../../pages/SignIn/SignIn';
 import SignUp from '../../pages/SignUp/SignUp';
@@ -20,9 +20,11 @@ const Main = () => {
               <Route path="signup" element={<SignUp />} />
             </>
           )}
+          {name && <Route path="plans" element={<Plans />} />}
           <Route path="/profile" element={<UserProfile />} />
-          <Route path="plans" element={<Plans />} />
+
           <Route path="/" element={<Welcome />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>
     </main>

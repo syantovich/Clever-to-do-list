@@ -6,7 +6,10 @@ import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
 import './Calendar.css';
 import { db } from '../../services/db';
-import { ICalendarProps } from '../../Modal/ICalendarProps';
+import { ICalendarProps } from './ICalendarProps';
+import { useDispatch, useSelector } from 'react-redux';
+import { userSelector } from '../../store/user/selector';
+import { setLoading } from '../../store/isLoading/isLoadingSlice';
 
 const Calendar = ({
   selected,
@@ -14,6 +17,8 @@ const Calendar = ({
   plans,
   setSelected,
 }: ICalendarProps) => {
+  const { email } = useSelector(userSelector);
+  const dispatch = useDispatch();
   const [nextMonth, setNextMonth] = useState(new Date().getMonth());
   const [days, setDays] = useState<string[]>([]);
   const [arrOfDays, setArrOfDays] = useState<JSX.Element[]>([]);
@@ -54,17 +59,24 @@ const Calendar = ({
     }
 
     const key = new Date(year, nextMonth + 1).toISOString().slice(0, 7);
-    db.getPlansOnMonth(key).then(result => {
-      result.forEach(doc => {
-        copyPlans[key][doc.id] = doc.data();
-      });
+    db.getPlansOnMonth(email!, key)
+      .then(result => {
+        let res = result.data();
+        if (res !== undefined) {
+          // copyPlans[key] = result.data();
+          for (let day in res) copyPlans[key][day] = res[day];
+          console.log(copyPlans);
+          console.log(result.data());
+        }
+      })
+      .finally(() => {
+        setPlans(copyPlans);
 
-      console.log(copyPlans);
-      setPlans(copyPlans);
-    });
-    setNextMonth(nextMonth + 1);
-    setArrOfDays(arrOfDays.concat(nextMonthArr));
-    setDays(days.concat(addingDays));
+        setNextMonth(nextMonth + 1);
+        setArrOfDays(arrOfDays.concat(nextMonthArr));
+        setDays(days.concat(addingDays));
+        dispatch(setLoading(false));
+      });
   };
   useEffect(() => {
     let arr: JSX.Element[] = [];
@@ -78,7 +90,9 @@ const Calendar = ({
   }, [selected]);
 
   useEffect(() => {
+    dispatch(setLoading(true));
     addDays();
+    console.log(false);
   }, []);
   return (
     <Stack

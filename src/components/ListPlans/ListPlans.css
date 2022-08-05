@@ -1,0 +1,13 @@
+.card_of_list {
+  width: 90%;
+  height: 100%;
+  overflow-y: scroll;
+  background-color: white;
+  border-radius: 20px;
+  padding: 50px;
+  box-sizing: border-box;
+  position: relative;
+}
+.card_of_list::-webkit-scrollbar {
+  width: 0;
+}

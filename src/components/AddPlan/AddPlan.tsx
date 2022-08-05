@@ -13,6 +13,8 @@ import { toast } from 'react-toastify';
 import { db } from '../../services/db';
 import { AddPlanType } from './AddPlan.type';
 import { uid } from 'uid';
+import { useSelector } from 'react-redux';
+import { userSelector } from '../../store/user/selector';
 
 const AddPlan = ({
   name,
@@ -30,6 +32,7 @@ const AddPlan = ({
   plans,
   setPlans,
 }: AddPlanType) => {
+  const { email } = useSelector(userSelector);
   return (
     <Card sx={{ width: 275, paddingLeft: 2, paddingRight: 2 }}>
       <CardContent className={'inputs'}>
@@ -117,13 +120,13 @@ const AddPlan = ({
       <CardActions>
         <Button
           onClick={() => {
-            console.log(timeStart <= timeEnd && name.length);
             if (timeStart <= timeEnd && name.length) {
               let id = uid(32);
               toast
                 .promise(
                   db
                     .updatePlans({
+                      email: email!,
                       name,
                       desc,
                       important,
@@ -133,9 +136,9 @@ const AddPlan = ({
                       id,
                       isFinished: false,
                     })
-                    .catch(e => {
-                      console.log(e);
+                    .catch(() => {
                       return db.addPlans({
+                        email: email!,
                         name,
                         desc,
                         important,
@@ -172,9 +175,9 @@ const AddPlan = ({
                     date: addingDate,
                     timeStart,
                     timeEnd,
+                    id,
                   };
                   setPlans(newPlans);
-                  console.log(newPlans);
                 });
             }
           }}>

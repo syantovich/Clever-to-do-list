@@ -19,6 +19,7 @@
 body {
   padding: 17px;
   overflow-x: hidden;
+  min-height: 500px;
 }
 
 @keyframes gradient {
@@ -39,4 +40,7 @@ header {
 main {
   width: 100%;
   flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

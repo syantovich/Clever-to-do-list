@@ -32,7 +32,7 @@ const SignIn = () => {
       .then(result => db.getUserInfo(result.user.uid))
       .then(res => {
         let result = res.data();
-        console.log(result);
+
         if (result) {
           dispatch(
             login({ name: result.name, email: result.email, uid: result.uid }),
@@ -51,7 +51,6 @@ const SignIn = () => {
 
     signInWithPopup(auth, google)
       .then(result => {
-        console.log(result);
         dispatch(
           login({
             email: result.user.email,

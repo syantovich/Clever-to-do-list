@@ -25,7 +25,7 @@ const Header = () => {
         </Grid>
         <Grid item xs={4}>
           <Button>
-            <Link to={'plans'}>Plans</Link>
+            <Link to={name ? 'plans' : 'signin'}>Plans</Link>
           </Button>
         </Grid>
         {name ? (

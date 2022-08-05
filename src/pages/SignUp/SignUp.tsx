@@ -66,8 +66,6 @@ const SignUp = () => {
           success: 'OK',
         })
         .then(result => {
-          console.log(result);
-
           toast.success('User created');
           dispatch(login({ name, email, uid: result.user.uid }));
           navigate('../');
@@ -84,7 +82,6 @@ const SignUp = () => {
     const google = new GoogleAuthProvider();
     signInWithPopup(auth, google)
       .then(result => {
-        console.log(result);
         let obj = {
           email: result.user.email,
           name: result.user.displayName,

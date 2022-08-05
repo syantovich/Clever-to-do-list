@@ -1,3 +1,3 @@
-import { IUser } from '../../Modal/IUser';
+import { IStore } from '../IStore';
 
-export const userSelector = (state: { user: IUser }) => state.user;
+export const userSelector = (state: IStore) => state.user;

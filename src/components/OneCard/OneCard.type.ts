@@ -1,4 +1,4 @@
-export type ElementOfListPlansType = {
+export type OneCardType = {
   name: string;
   id: string;
   desc: string;
@@ -7,6 +7,8 @@ export type ElementOfListPlansType = {
   timeStart: string;
   timeEnd: string;
   isFinished: boolean;
-  date: string;
   setOpenedPlan: any;
+  date: string;
+  plans: any;
+  setPlans: any;
 };

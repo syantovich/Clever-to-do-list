@@ -5,6 +5,7 @@
   "dependencies": {
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
+    "@firebase/database": "^0.13.4",
     "@firebase/firestore": "^3.4.13",
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.9.3",

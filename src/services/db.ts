@@ -5,11 +5,12 @@ import {
   doc,
   collection,
   updateDoc,
-  getDocs,
+
+  // getDocs,
 } from '@firebase/firestore';
 import '../firebase';
 import { getDoc } from 'firebase/firestore';
-import { IinfoPlan } from '../Modal/IinfoPlan';
+import { IinfoPlan } from '../pages/Plans/IinfoPlan';
 import { PlanType } from './db.type';
 
 class Db {
@@ -31,11 +32,12 @@ class Db {
     return getDoc(doc(this.db, 'usersinfo', uuid));
   }
 
-  getPlansOnMonth(month: string) {
-    return getDocs(collection(this.db, month));
+  getPlansOnMonth(email: string, month: string) {
+    return getDoc(doc(this.db, email, month));
   }
 
-  updatePlans({
+  async updatePlans({
+    email,
     name,
     desc,
     important,
@@ -47,24 +49,33 @@ class Db {
   }: PlanType) {
     let collecton = date.slice(0, 7);
     let keyInCollection = date.slice(8);
-    let addingObj: { [key: string]: IinfoPlan } = {};
-    addingObj[id] = {
-      name,
-      desc,
-      important,
-      date,
-      timeStart,
-      timeEnd,
-      isFinished,
-      id,
-    };
-    return updateDoc(
-      doc(collection(this.db, collecton), keyInCollection),
-      addingObj,
-    );
+    let oldData = (await this.getPlansOnMonth(email, collecton)).data();
+    if (oldData) {
+      console.log(oldData);
+      if (!oldData[keyInCollection]) {
+        oldData[keyInCollection] = {};
+      }
+      console.log(oldData[keyInCollection]);
+      console.log(id);
+      oldData[keyInCollection][id] = {
+        name,
+        desc,
+        important,
+        date,
+        timeStart,
+        timeEnd,
+        isFinished,
+        id,
+      };
+    } else {
+      throw new Error('No users data on db');
+    }
+    console.log(oldData);
+    return updateDoc(doc(this.db, email, collecton), oldData);
   }
 
   addPlans({
+    email,
     name,
     desc,
     important,
@@ -87,10 +98,9 @@ class Db {
       isFinished,
       id,
     };
-    return setDoc(
-      doc(collection(this.db, collecton), keyInCollection),
-      addingObj,
-    );
+    let obj: { [key: string]: { [uid: string]: IinfoPlan } } = {};
+    obj[keyInCollection] = addingObj;
+    return setDoc(doc(this.db, email, collecton), obj);
   }
 }
 

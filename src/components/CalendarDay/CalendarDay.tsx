@@ -1,6 +1,6 @@
 import React from 'react';
 import { Stack, Grid } from '@mui/material';
-import { ICalendarDay } from '../../Modal/ICalendarDay';
+import { ICalendarDay } from './ICalendarDay';
 import './CalendarDay.css';
 import { MonthArr } from '../../constants';
 

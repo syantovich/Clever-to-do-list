@@ -1,4 +1,5 @@
 export type PlanType = {
+  email: string;
   name: string;
   desc: string;
   important: string;
