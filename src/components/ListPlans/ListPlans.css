@@ -1,7 +1,7 @@
 .card_of_list {
   width: 90%;
   height: 100%;
-  overflow-y: scroll;
+  overflow: scroll;
   background-color: white;
   border-radius: 20px;
   padding: 50px;
@@ -18,4 +18,17 @@
   justify-content: center;
   align-items: center;
   font-size: 2rem;
+}
+.timeline {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  align-items: center;
+  min-width: 1200px;
+  width: 100%;
+}
+.switch_graphs {
+  position: absolute;
+  top: 0;
+  right: 0;
 }

@@ -39,7 +39,6 @@ const ElementOfListPlans = ({
           timeEnd,
           isFinished,
         });
-        console.log('cllick');
       }}>
       <Grid
         container

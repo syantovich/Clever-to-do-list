@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import ElementOfListPlans from '../ElementOfListPlans/ElementOfListPlans';
 import { IinfoPlan } from '../../pages/Plans/IinfoPlan';
-import { Box, Grid } from '@mui/material';
+import { Box, Grid, FormControlLabel, Switch } from '@mui/material';
 import './ListPlans.css';
 import LoadingSpinner from '../LoadingSpiner/LoadingSpiner';
 import { useSelector } from 'react-redux';
@@ -10,6 +10,7 @@ import { isLoadingSelector } from '../../store/isLoading/selector';
 import OneCard from '../OneCard/OneCard';
 import { getPlans } from '../../store/plans/selector';
 import { getSelected } from '../../store/workMode/selector';
+import Graphs from '../Graphs/Graphs';
 
 const ListPlans = () => {
   const [elements, setElements] = useState<JSX.Element[]>([]);
@@ -17,6 +18,9 @@ const ListPlans = () => {
   const selected = useSelector(getSelected);
   const isLoading = useSelector(isLoadingSelector);
   const [openedPlan, setOpenedPlan] = useState<IinfoPlan | null>(null);
+  const [sortedList, setSortedList] = useState<IinfoPlan[]>([]);
+  const [switchGraphs, setSwitchGraphs] = useState(false);
+
   useEffect(() => {
     if (!isLoading) {
       let arrOfValues: IinfoPlan[] = Object.values(
@@ -29,6 +33,7 @@ const ListPlans = () => {
           return b.timeStart > a.timeStart ? -1 : 1;
         }
       });
+      setSortedList(sortedArr);
       setElements(
         sortedArr.map(e => {
           return (
@@ -54,6 +59,20 @@ const ListPlans = () => {
   return (
     <>
       <Box className={'card_of_list'}>
+        <FormControlLabel
+          control={
+            <Switch
+              value={switchGraphs}
+              onChange={(e, v) => {
+                if (sortedList.length) {
+                  setSwitchGraphs(v);
+                }
+              }}
+            />
+          }
+          label="Graphs"
+          className={'switch_graphs'}
+        />
         {isLoading ? (
           <LoadingSpinner />
         ) : elements.length ? (
@@ -70,7 +89,7 @@ const ListPlans = () => {
             />
           ) : (
             <Grid container spacing={2}>
-              {elements}
+              {switchGraphs ? <Graphs sortedList={sortedList} /> : elements}
             </Grid>
           )
         ) : (
