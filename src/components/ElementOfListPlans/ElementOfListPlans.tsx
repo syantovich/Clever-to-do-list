@@ -3,6 +3,11 @@ import { Box, Typography, Grid } from '@mui/material';
 import { ElementOfListPlansType } from './ElementOfListPlans.type';
 import './ElementOfPlans.css';
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { toast } from 'react-toastify';
+import { db } from '../../services/db';
+import { useSelector } from 'react-redux';
+import { userSelector } from '../../store/user/selector';
 
 const ElementOfListPlans = ({
   id,
@@ -17,6 +22,7 @@ const ElementOfListPlans = ({
   date,
 }: ElementOfListPlansType) => {
   const disabled = isFinished || `${addingDate}T${timeEnd}` < date;
+  const { email } = useSelector(userSelector);
   return (
     <Box
       className={`${important} element_of_plan ${
@@ -45,7 +51,26 @@ const ElementOfListPlans = ({
             {name} from {timeStart}
           </Typography>
         </Grid>
-        <Grid item xs={1} className={'icon_edit'}>
+        <Grid
+          item
+          xs={1}
+          className={'icon_del'}
+          onClick={e => {
+            e.stopPropagation();
+            toast
+              .promise(db.deletePlan(email!, addingDate, id), {
+                pending: 'deleting',
+                error: 'error',
+                success: 'ok',
+              })
+              .then(result => {
+                console.log(result);
+              })
+              .catch(ev => console.log(ev));
+          }}>
+          <DeleteIcon />
+        </Grid>
+        <Grid item xs={1} className={'icon_full'}>
           <OpenInFullIcon />
         </Grid>
       </Grid>

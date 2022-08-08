@@ -9,6 +9,4 @@ export type OneCardType = {
   isFinished: boolean;
   setOpenedPlan: any;
   date: string;
-  plans: any;
-  setPlans: any;
 };

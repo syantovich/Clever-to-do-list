@@ -3,15 +3,17 @@ import { Stack, Grid } from '@mui/material';
 import { ICalendarDay } from './ICalendarDay';
 import './CalendarDay.css';
 import { MonthArr } from '../../constants';
+import { useDispatch } from 'react-redux';
+import { setSelected, setWorkMode } from '../../store/workMode/workModeSlice';
 
 const CalendarDay = ({
   dayOfWeek,
   dayOfMonth,
   month,
   isSelected,
-  onClick,
   selected,
 }: ICalendarDay) => {
+  const dispatch = useDispatch();
   return (
     <Stack
       alignItems="center"
@@ -28,7 +30,8 @@ const CalendarDay = ({
         alignItems="center"
         className={`day_element ${isSelected ? 'selected' : ''}`}
         onClick={() => {
-          onClick(selected);
+          dispatch(setWorkMode(0));
+          dispatch(setSelected(selected));
         }}>
         <Grid item xs={12}>
           {dayOfMonth}

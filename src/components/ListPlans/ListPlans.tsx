@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ListPlansType } from './ListPlans.type';
+
 import ElementOfListPlans from '../ElementOfListPlans/ElementOfListPlans';
 import { IinfoPlan } from '../../pages/Plans/IinfoPlan';
 import { Box, Grid } from '@mui/material';
@@ -8,9 +8,13 @@ import LoadingSpinner from '../LoadingSpiner/LoadingSpiner';
 import { useSelector } from 'react-redux';
 import { isLoadingSelector } from '../../store/isLoading/selector';
 import OneCard from '../OneCard/OneCard';
+import { getPlans } from '../../store/plans/selector';
+import { getSelected } from '../../store/workMode/selector';
 
-const ListPlans = ({ plans, setPlans, selected }: ListPlansType) => {
+const ListPlans = () => {
   const [elements, setElements] = useState<JSX.Element[]>([]);
+  const plans = useSelector(getPlans);
+  const selected = useSelector(getSelected);
   const isLoading = useSelector(isLoadingSelector);
   const [openedPlan, setOpenedPlan] = useState<IinfoPlan | null>(null);
   useEffect(() => {
@@ -63,8 +67,6 @@ const ListPlans = ({ plans, setPlans, selected }: ListPlansType) => {
                 'T' +
                 new Date().toLocaleString().slice(12, 17)
               }
-              setPlans={setPlans}
-              plans={plans}
             />
           ) : (
             <Grid container spacing={2}>
@@ -72,7 +74,7 @@ const ListPlans = ({ plans, setPlans, selected }: ListPlansType) => {
             </Grid>
           )
         ) : (
-          'No plans in this day'
+          <div className={'no_plan'}>No plans in this day</div>
         )}
       </Box>
     </>

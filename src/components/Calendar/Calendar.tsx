@@ -6,19 +6,19 @@ import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
 import './Calendar.css';
 import { db } from '../../services/db';
-import { ICalendarProps } from './ICalendarProps';
 import { useDispatch, useSelector } from 'react-redux';
 import { userSelector } from '../../store/user/selector';
 import { setLoading } from '../../store/isLoading/isLoadingSlice';
+import { setPlans } from '../../store/plans/plansSlice';
+import { getSelected } from '../../store/workMode/selector';
+import { IPlans } from '../../store/plans/IPlans';
 
-const Calendar = ({
-  selected,
-  setPlans,
-  plans,
-  setSelected,
-}: ICalendarProps) => {
+const Calendar = () => {
   const { email } = useSelector(userSelector);
+  const selected = useSelector(getSelected);
   const dispatch = useDispatch();
+  let plans: IPlans = {};
+  console.log(plans);
   const [nextMonth, setNextMonth] = useState(new Date().getMonth());
   const [days, setDays] = useState<string[]>([]);
   const [arrOfDays, setArrOfDays] = useState<JSX.Element[]>([]);
@@ -35,7 +35,6 @@ const Calendar = ({
         isSelected={selectedDate === selected}
         month={month}
         key={`${month} ${i}`}
-        onClick={setSelected}
       />
     );
   };
@@ -43,7 +42,9 @@ const Calendar = ({
     let nextMonthArr: JSX.Element[] = [];
     const addingDays: string[] = [];
     let year = new Date().getFullYear();
+    console.log(plans);
     let copyPlans = { ...plans };
+
     for (
       let i = nextMonth === new Date().getMonth() ? currDayInMonth() : 1;
       i <= daysInMonth(nextMonth + 1, year);
@@ -54,6 +55,7 @@ const Calendar = ({
       if (!copyPlans[date.slice(0, 7)]) {
         copyPlans[date.slice(0, 7)] = {};
       }
+
       copyPlans[date.slice(0, 7)][date.slice(8)] = {};
       nextMonthArr.push(update(i, nextMonth, year));
     }
@@ -64,14 +66,14 @@ const Calendar = ({
         let res = result.data();
         if (res !== undefined) {
           // copyPlans[key] = result.data();
+
           for (let day in res) copyPlans[key][day] = res[day];
           console.log(copyPlans);
           console.log(result.data());
         }
       })
       .finally(() => {
-        setPlans(copyPlans);
-
+        dispatch(setPlans(copyPlans));
         setNextMonth(nextMonth + 1);
         setArrOfDays(arrOfDays.concat(nextMonthArr));
         setDays(days.concat(addingDays));

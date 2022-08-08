@@ -5,6 +5,7 @@ import {
   doc,
   collection,
   updateDoc,
+  deleteField,
 
   // getDocs,
 } from '@firebase/firestore';
@@ -36,6 +37,13 @@ class Db {
     return getDoc(doc(this.db, email, month));
   }
 
+  async deletePlan(email: string, date: string, id: string) {
+    let collecton = date.slice(0, 7);
+    let delObj: any = {};
+    delObj[`${date.slice(8)}.${id}`] = deleteField();
+    return updateDoc(doc(this.db, email, collecton), delObj);
+  }
+
   async updatePlans({
     email,
     name,
@@ -49,29 +57,18 @@ class Db {
   }: PlanType) {
     let collecton = date.slice(0, 7);
     let keyInCollection = date.slice(8);
-    let oldData = (await this.getPlansOnMonth(email, collecton)).data();
-    if (oldData) {
-      console.log(oldData);
-      if (!oldData[keyInCollection]) {
-        oldData[keyInCollection] = {};
-      }
-      console.log(oldData[keyInCollection]);
-      console.log(id);
-      oldData[keyInCollection][id] = {
-        name,
-        desc,
-        important,
-        date,
-        timeStart,
-        timeEnd,
-        isFinished,
-        id,
-      };
-    } else {
-      throw new Error('No users data on db');
-    }
-    console.log(oldData);
-    return updateDoc(doc(this.db, email, collecton), oldData);
+    let obj: any = {};
+    obj[`${keyInCollection}.${id}`] = {
+      name,
+      desc,
+      important,
+      date,
+      timeStart,
+      timeEnd,
+      isFinished,
+      id,
+    };
+    return updateDoc(doc(this.db, email, collecton), obj);
   }
 
   addPlans({

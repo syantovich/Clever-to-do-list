@@ -1,30 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import './Plans.css';
 import Calendar from '../../components/Calendar/Calendar';
 import { Grid } from '@mui/material';
-import { importance } from '../../constants';
 import ButtonNav from '../../components/ButtonNav/ButtonNav';
 import AddPlan from '../../components/AddPlan/AddPlan';
 import ListPlans from '../../components/ListPlans/ListPlans';
+import { useSelector } from 'react-redux';
+import { getWorkMode } from '../../store/workMode/selector';
 
 const Plans = () => {
-  const [selectedDate, setSelectedDate] = useState(
-    new Date().toISOString().slice(0, 10),
-  );
-  const [workMod, setWorkMode] = useState(0);
-  const [plans, setPlans] = useState({});
-  const [name, setName] = useState('');
-  const [desc, setDesc] = useState('');
-  const [important, setImportant] = useState(importance[0].value);
-  const [addingDate, setAddingDate] = useState(selectedDate);
-  const [timeStart, setTimeStart] = useState<string>('09:30');
-  const [timeEnd, setTimeEnd] = useState<string>('10:30');
+  const workMod = useSelector(getWorkMode);
+
   useEffect(() => {
     console.log(workMod);
   }, [workMod]);
-  useEffect(() => {
-    console.log(plans);
-  }, [plans]);
   return (
     <>
       <section className={'wrapper_plans'}>
@@ -36,42 +25,14 @@ const Plans = () => {
           justifyContent={'flex-end'}
           className={'wrapper_plans_grid'}>
           <Grid item xs={true} className={'wrapper_plans_content'}>
-            {workMod === 1 && (
-              <AddPlan
-                name={name}
-                setName={setName}
-                desc={desc}
-                setDesc={setDesc}
-                setImportant={setImportant}
-                important={important}
-                addingDate={addingDate}
-                setAddingDate={setAddingDate}
-                timeStart={timeStart}
-                setTimeStart={setTimeStart}
-                setTimeEnd={setTimeEnd}
-                timeEnd={timeEnd}
-                plans={plans}
-                setPlans={setPlans}
-              />
-            )}
-            {workMod === 0 && (
-              <ListPlans
-                plans={plans}
-                setPlans={setPlans}
-                selected={selectedDate}
-              />
-            )}
+            {workMod === 1 && <AddPlan />}
+            {workMod === 0 && <ListPlans />}
           </Grid>
           <Grid item xs={2}>
-            <ButtonNav workMode={workMod} setWorkMode={setWorkMode} />
+            <ButtonNav />
           </Grid>
           <Grid item xs={2}>
-            <Calendar
-              selected={selectedDate}
-              setSelected={setSelectedDate}
-              plans={plans}
-              setPlans={setPlans}
-            />
+            <Calendar />
           </Grid>
         </Grid>
       </section>

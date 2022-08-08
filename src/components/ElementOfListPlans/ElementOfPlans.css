@@ -15,10 +15,10 @@
   border-radius: 5px;
   position: relative;
 }
-.wrapper_plans_content .element_of_plan .icon_edit {
+.wrapper_plans_content .element_of_plan .icon_full {
   opacity: 0;
 }
-.wrapper_plans_content .element_of_plan:hover .icon_edit {
+.wrapper_plans_content .element_of_plan:hover .icon_full {
   opacity: 1;
 }
 .wrapper_plans_content .element_of_plan:hover {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   Card,
@@ -13,26 +13,29 @@ import { toast } from 'react-toastify';
 import { db } from '../../services/db';
 import { AddPlanType } from './AddPlan.type';
 import { uid } from 'uid';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { userSelector } from '../../store/user/selector';
+import { addPlan, deletePlan } from '../../store/plans/plansSlice';
+import { getSelected } from '../../store/workMode/selector';
 
-const AddPlan = ({
-  name,
-  setName,
-  desc,
-  setDesc,
-  setImportant,
-  important,
-  addingDate,
-  setAddingDate,
-  timeStart,
-  setTimeStart,
-  setTimeEnd,
-  timeEnd,
-  plans,
-  setPlans,
-}: AddPlanType) => {
+const AddPlan = ({ defaultObj, setIsEdit, setOpenedPlan }: AddPlanType) => {
   const { email } = useSelector(userSelector);
+  const dispatch = useDispatch();
+  const [oldDate, setOldDate] = useState(defaultObj?.date);
+  const [uuid, setUuid] = useState(defaultObj?.id || uid(32));
+  const [name, setName] = useState(defaultObj?.name || '');
+  const [desc, setDesc] = useState(defaultObj?.desc || '');
+  const selectedDate = defaultObj?.date || useSelector(getSelected);
+  const [important, setImportant] = useState(
+    defaultObj?.important || importance[0].value,
+  );
+  const [addingDate, setAddingDate] = useState(selectedDate);
+  const [timeStart, setTimeStart] = useState<string>(
+    defaultObj?.timeStart || '09:30',
+  );
+  const [timeEnd, setTimeEnd] = useState<string>(
+    defaultObj?.timeEnd || '10:30',
+  );
   return (
     <Card sx={{ width: 275, paddingLeft: 2, paddingRight: 2 }}>
       <CardContent className={'inputs'}>
@@ -121,7 +124,20 @@ const AddPlan = ({
         <Button
           onClick={() => {
             if (timeStart <= timeEnd && name.length) {
-              let id = uid(32);
+              if (defaultObj?.date !== addingDate && !!defaultObj?.date) {
+                toast
+                  .promise(db.deletePlan(email!, oldDate!, uuid), {
+                    error: 'Save error',
+                    success: 'deleted',
+                    pending: 'deleting',
+                  })
+                  .then(() => {
+                    setOldDate(addingDate);
+                    setIsEdit(false);
+                    setOpenedPlan(null);
+                    dispatch(deletePlan({ date: oldDate, id: uuid }));
+                  });
+              }
               toast
                 .promise(
                   db
@@ -133,7 +149,7 @@ const AddPlan = ({
                       date: addingDate,
                       timeStart,
                       timeEnd,
-                      id,
+                      id: uuid,
                       isFinished: false,
                     })
                     .catch(() => {
@@ -145,7 +161,7 @@ const AddPlan = ({
                         date: addingDate,
                         timeStart,
                         timeEnd,
-                        id,
+                        id: uuid,
                         isFinished: false,
                       });
                     }),
@@ -156,32 +172,26 @@ const AddPlan = ({
                   },
                 )
                 .then(() => {
-                  let newPlans = { ...plans };
-                  // if (newPlans[addingDate.slice(0, 7)]) {
-                  //   if (
-                  //     !newPlans[addingDate.slice(0, 7)][addingDate.slice(8)]
-                  //   ) {
-                  //     newPlans[addingDate.slice(0, 7)][addingDate.slice(8)] =
-                  //       {};
-                  //   }
-                  // } else {
-                  //   newPlans[addingDate.slice(0, 7)] = {};
-                  //   newPlans[addingDate.slice(0, 7)][addingDate.slice(8)] = {};
-                  // }
-                  newPlans[addingDate.slice(0, 7)][addingDate.slice(8)][id] = {
-                    name,
-                    desc,
-                    important,
-                    date: addingDate,
-                    timeStart,
-                    timeEnd,
-                    id,
-                  };
-                  setPlans(newPlans);
+                  if (!defaultObj?.id) {
+                    setUuid(uid(32));
+                  }
+                  dispatch(
+                    addPlan({
+                      name,
+                      desc,
+                      important,
+                      date: addingDate,
+                      timeStart,
+                      timeEnd,
+                      id: uuid,
+                      isFinished: false,
+                    }),
+                  );
                 });
             }
           }}>
-          Add
+          {defaultObj?.id && 'Save'}
+          {!defaultObj?.id && 'Add'}
         </Button>
       </CardActions>
     </Card>

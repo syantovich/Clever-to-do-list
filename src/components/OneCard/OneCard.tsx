@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import { Checkbox, Typography, Box, CardContent, Card } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { toast } from 'react-toastify';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { userSelector } from '../../store/user/selector';
 import { OneCardType } from './OneCard.type';
 import { db } from '../../services/db';
 import './OneCard.css';
+import { changePlansIsFinished } from '../../store/plans/plansSlice';
+import AddPlan from '../AddPlan/AddPlan';
+import EditIcon from '@mui/icons-material/Edit';
 
 const OneCard = ({
   id,
@@ -19,11 +22,12 @@ const OneCard = ({
   isFinished,
   setOpenedPlan,
   date,
-  plans,
-  setPlans,
 }: OneCardType) => {
+  const [isEdit, setIsEdit] = useState(false);
   const { email } = useSelector(userSelector);
   const [isEnd, setIsEnd] = useState(isFinished);
+  const dispatch = useDispatch();
+  console.log(setIsEdit);
   const setFinished = (is: boolean) => {
     toast
       .promise(
@@ -41,45 +45,50 @@ const OneCard = ({
         { pending: 'Changing', error: 'Error of Change', success: 'Changed' },
       )
       .then(() => {
-        let copy = { ...plans };
-        copy[date.slice(0, 7)][addingDate.slice(8)][id].isFinished = is;
-        setPlans(copy);
+        dispatch(
+          changePlansIsFinished({
+            month: addingDate.slice(0, 7),
+            day: addingDate.slice(8),
+            id,
+            is,
+          }),
+        );
         setIsEnd(is);
       });
   };
   return (
     <Box className={'wrapper_card'}>
       <Card className={'content'}>
-        <CardContent>
-          <div className={'cross'} onClick={() => setOpenedPlan(null)}>
-            <CloseIcon />
-          </div>
-          <Typography>
-            Date:
+        <div className={'cross'} onClick={() => setOpenedPlan(null)}>
+          <CloseIcon />
+        </div>
+        {!isEdit && (
+          <CardContent>
+            <div className={'edit'} onClick={() => setIsEdit(true)}>
+              <EditIcon />
+            </div>
+
+            <Typography>Name:</Typography>
+            <Typography variant="h6" gutterBottom component="div">
+              {name}
+            </Typography>
+            <Typography>Date:</Typography>
             <Typography variant="h6" gutterBottom component="div">
               {addingDate}
             </Typography>
-          </Typography>
-          <Typography>
-            Description:
+            <Typography>Description:</Typography>
             <Typography variant="h6" gutterBottom component="div">
               {desc}
             </Typography>
-          </Typography>
-          <Typography>
-            Time start:
+            <Typography>Time start:</Typography>
             <Typography variant="h6" gutterBottom component="div">
               {timeStart}
             </Typography>
-          </Typography>
-          <Typography>
-            Time end:
+            <Typography>Time end:</Typography>
             <Typography variant="h6" gutterBottom component="div">
               {timeEnd}
             </Typography>
-          </Typography>
-          <Typography>
-            Finished
+            <Typography>Finished </Typography>
             {!(isFinished || `${addingDate}T${timeEnd}` < date) && (
               <Checkbox
                 value={isEnd}
@@ -88,8 +97,24 @@ const OneCard = ({
                 }}
               />
             )}
-          </Typography>
-        </CardContent>
+          </CardContent>
+        )}
+        {isEdit && (
+          <AddPlan
+            defaultObj={{
+              name,
+              desc,
+              important,
+              date: addingDate,
+              timeStart,
+              timeEnd,
+              id,
+              isFinished: isEnd,
+            }}
+            setIsEdit={setIsEdit}
+            setOpenedPlan={setOpenedPlan}
+          />
+        )}
       </Card>
     </Box>
   );
