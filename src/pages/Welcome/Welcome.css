@@ -8,19 +8,19 @@
   font-size: 2rem;
   width: 50%;
   text-align: center;
-  color: white;
+  color: #8e271f;
 }
 .wrapper_welcome button {
   width: 120px;
   height: 40px;
-  background: aliceblue;
+  background: #ff611a;
   border: 0px;
   border-radius: 40px;
   color: #8e271f;
 }
 .wrapper_welcome button:hover {
-  background: aliceblue;
-  color: #8e271f;
+  background-color: #d00101;
+  color: white;
   border: white;
 }
 .wrapper_welcome .img {

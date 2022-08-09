@@ -1,13 +1,4 @@
 .App {
-  background: linear-gradient(
-    149deg,
-    #931a30 0%,
-    #a83411 42%,
-    #2d221c 72%,
-    #ec1146 100%
-  );
-  animation: gradient 10s infinite linear;
-  background-size: 400%;
   width: 100vw;
   min-height: 100vh;
   position: absolute;
@@ -22,18 +13,6 @@ body {
   min-height: 500px;
 }
 
-@keyframes gradient {
-  0% {
-    background-position: 80% 0%;
-  }
-  50% {
-    background-position: 20% 100%;
-  }
-  100% {
-    background-position: 80% 0%;
-  }
-}
-
 header {
   width: 100%;
 }
@@ -43,4 +22,44 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.App a {
+  color: #8e271f;
+  text-decoration: none;
+}
+.App .MuiButton-root {
+  color: #8e271f;
+  background-color: #ff611a;
+}
+.App .MuiButton-root:hover {
+  background-color: #d00101;
+  color: white;
+}
+.App .MuiButton-root:focus {
+  background-color: #d00101;
+  color: white;
+  border: #d00101 2px solid;
+}
+
+.App .css-sghohy-MuiButtonBase-root-MuiButton-root {
+  background-color: #ff611a;
+  color: white;
+}
+.App label.Mui-focused {
+  color: #ff611a;
+}
+.App .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border: 2px solid #ff611a;
+}
+.App .MuiButton-root:hover {
+  background-color: #91401b;
+}
+.App .MuiInput-root:after {
+  border-bottom: 1px solid #ff611a;
+}
+.App .MuiOutlinedInput-root {
+  border-radius: 20px;
+}
+.around .MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline {
+  border: 2px solid black;
 }

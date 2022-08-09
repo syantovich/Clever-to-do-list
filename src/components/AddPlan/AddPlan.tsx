@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { userSelector } from '../../store/user/selector';
 import { addPlan, deletePlan } from '../../store/plans/plansSlice';
 import { getSelected } from '../../store/workMode/selector';
+import './AddPlan.css';
 
 const AddPlan = ({ defaultObj, setIsEdit, setOpenedPlan }: AddPlanType) => {
   const { email } = useSelector(userSelector);
@@ -80,7 +81,7 @@ const AddPlan = ({ defaultObj, setIsEdit, setOpenedPlan }: AddPlanType) => {
               type="date"
               defaultValue={addingDate}
               onChange={e => setAddingDate(e.target.value)}
-              sx={{ width: 220 }}
+              sx={{ width: 150 }}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -188,6 +189,14 @@ const AddPlan = ({ defaultObj, setIsEdit, setOpenedPlan }: AddPlanType) => {
                     }),
                   );
                 });
+            } else {
+              if (timeStart > timeEnd) {
+                toast.error('Time start could be more then time end');
+              }
+
+              if (!name.length) {
+                toast.error('Name is required');
+              }
             }
           }}>
           {defaultObj?.id && 'Save'}

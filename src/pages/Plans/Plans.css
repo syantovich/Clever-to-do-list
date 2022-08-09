@@ -11,3 +11,10 @@
   justify-content: center;
   align-items: center;
 }
+.wrapper_plans .css-1bjk3jo-MuiButtonBase-root-MuiBottomNavigationAction-root {
+  background-color: white;
+}
+.wrapper_plans
+  .css-1bjk3jo-MuiButtonBase-root-MuiBottomNavigationAction-root.Mui-selected {
+  color: red;
+}

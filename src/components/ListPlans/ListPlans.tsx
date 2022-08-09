@@ -5,12 +5,14 @@ import { IinfoPlan } from '../../pages/Plans/IinfoPlan';
 import { Box, Grid, FormControlLabel, Switch } from '@mui/material';
 import './ListPlans.css';
 import LoadingSpinner from '../LoadingSpiner/LoadingSpiner';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { isLoadingSelector } from '../../store/isLoading/selector';
 import OneCard from '../OneCard/OneCard';
 import { getPlans } from '../../store/plans/selector';
 import { getSelected } from '../../store/workMode/selector';
 import Graphs from '../Graphs/Graphs';
+import { isGraphs } from '../../store/switchGraphs/selector';
+import { setGraphs } from '../../store/switchGraphs/switchGraphsSlice';
 
 const ListPlans = () => {
   const [elements, setElements] = useState<JSX.Element[]>([]);
@@ -19,8 +21,8 @@ const ListPlans = () => {
   const isLoading = useSelector(isLoadingSelector);
   const [openedPlan, setOpenedPlan] = useState<IinfoPlan | null>(null);
   const [sortedList, setSortedList] = useState<IinfoPlan[]>([]);
-  const [switchGraphs, setSwitchGraphs] = useState(false);
-
+  const switchGraphs = useSelector(isGraphs);
+  const dispatch = useDispatch();
   useEffect(() => {
     if (!isLoading) {
       let arrOfValues: IinfoPlan[] = Object.values(
@@ -56,47 +58,46 @@ const ListPlans = () => {
       console.log(sortedArr);
     }
   }, [selected, plans]);
-  return (
-    <>
-      <Box className={'card_of_list'}>
-        <FormControlLabel
-          control={
-            <Switch
-              value={switchGraphs}
-              onChange={(e, v) => {
-                if (sortedList.length) {
-                  setSwitchGraphs(v);
-                }
-              }}
-            />
-          }
-          label="Graphs"
-          className={'switch_graphs'}
-        />
-        {isLoading ? (
-          <LoadingSpinner />
-        ) : elements.length ? (
-          openedPlan ? (
-            <OneCard
-              {...openedPlan}
-              setOpenedPlan={setOpenedPlan}
-              addingDate={openedPlan.date}
-              date={
-                new Date().toISOString().slice(0, 10) +
-                'T' +
-                new Date().toLocaleString().slice(12, 17)
-              }
-            />
-          ) : (
-            <Grid container spacing={2}>
-              {switchGraphs ? <Graphs sortedList={sortedList} /> : elements}
-            </Grid>
-          )
+  return isLoading ? (
+    <LoadingSpinner />
+  ) : (
+    <Box className={'card_of_list'}>
+      <FormControlLabel
+        control={
+          <Switch
+            checked={switchGraphs}
+            disabled={!sortedList.length}
+            onChange={(e, v) => {
+              dispatch(setGraphs(v));
+            }}
+          />
+        }
+        label="Graphs"
+        className={'switch_graphs'}
+      />
+      {elements.length ? (
+        openedPlan ? (
+          <OneCard
+            {...openedPlan}
+            setOpenedPlan={setOpenedPlan}
+            addingDate={openedPlan.date}
+            date={
+              new Date().toISOString().slice(0, 10) +
+              'T' +
+              new Date().toLocaleString().slice(12, 17)
+            }
+          />
+        ) : switchGraphs ? (
+          <Graphs sortedList={sortedList} setOpenedPlan={setOpenedPlan} />
         ) : (
-          <div className={'no_plan'}>No plans in this day</div>
-        )}
-      </Box>
-    </>
+          <Grid container spacing={2}>
+            {elements}
+          </Grid>
+        )
+      ) : (
+        <div className={'no_plan'}>No plans in this day</div>
+      )}
+    </Box>
   );
 };
 export default ListPlans;

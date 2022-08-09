@@ -5,6 +5,8 @@ import './CalendarDay.css';
 import { MonthArr } from '../../constants';
 import { useDispatch } from 'react-redux';
 import { setSelected, setWorkMode } from '../../store/workMode/workModeSlice';
+import { setGraphs } from '../../store/switchGraphs/switchGraphsSlice';
+import { setLoading } from '../../store/isLoading/isLoadingSlice';
 
 const CalendarDay = ({
   dayOfWeek,
@@ -30,8 +32,11 @@ const CalendarDay = ({
         alignItems="center"
         className={`day_element ${isSelected ? 'selected' : ''}`}
         onClick={() => {
-          dispatch(setWorkMode(0));
+          dispatch(setLoading(true));
           dispatch(setSelected(selected));
+          dispatch(setWorkMode(0));
+          dispatch(setGraphs(false));
+          dispatch(setLoading(false));
         }}>
         <Grid item xs={12}>
           {dayOfMonth}

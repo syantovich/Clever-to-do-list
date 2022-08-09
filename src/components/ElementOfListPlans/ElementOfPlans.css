@@ -1,17 +1,17 @@
 .wrapper_plans_content .important {
-  background-color: #cccc40;
-  border: 2px solid #cccc40;
-  fill: #cccc40;
+  background-color: #f7c832;
+  border: 2px solid #f7c832;
+  fill: #f7c832;
 }
 .wrapper_plans_content .very_important {
-  background-color: #8e271f;
-  border: 2px solid #8e271f;
-  fill: #8e271f;
+  background-color: #ff8c2c;
+  border: 2px solid #ff8c2c;
+  fill: #ff8c2c;
 }
 .wrapper_plans_content .not_matter {
-  background-color: green;
-  border: 2px solid green;
-  fill: green;
+  background-color: #1aaf63;
+  border: 2px solid #1aaf63;
+  fill: #1aaf63;
 }
 .wrapper_plans_content .element_of_plan {
   padding: 10px 20px;
@@ -24,9 +24,15 @@
 .wrapper_plans_content .element_of_plan:hover .icon_full {
   opacity: 1;
 }
+.wrapper_plans_content .element_of_plan .icon_del {
+  opacity: 0;
+}
+.wrapper_plans_content .element_of_plan:hover .icon_del {
+  opacity: 1;
+}
 .wrapper_plans_content .element_of_plan:hover {
   cursor: pointer;
 }
 .opacity_element {
-  opacity: 0.5;
+  opacity: 0.3;
 }

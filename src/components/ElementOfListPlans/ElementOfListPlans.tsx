@@ -45,7 +45,7 @@ const ElementOfListPlans = ({
         spacing={2}
         justifyContent="space-between"
         alignItems="center">
-        <Grid item xs={11}>
+        <Grid item xs={10}>
           <Typography>
             {name} from {timeStart}
           </Typography>

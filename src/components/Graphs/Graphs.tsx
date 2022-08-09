@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { GraphsType } from './Graphs.type';
 import './Graphs.css';
 
-const Graphs = ({ sortedList }: GraphsType) => {
-  console.log(sortedList);
+const Graphs = ({ sortedList, setOpenedPlan }: GraphsType) => {
   const size = 1200 / 24;
-  const maxHeight = (sortedList.length * 50 || 200) + size;
+  const currentTime = new Date().toLocaleString().slice(12, 17);
+  const currentDate = new Date().toISOString().slice(0, 10);
+  const maxHeight =
+    sortedList.length > 6 ? sortedList.length * size + size : size * 7;
   const [lines, setLines] = useState<JSX.Element[]>([]);
   const [blocks, setBlocks] = useState<JSX.Element[]>([]);
   useEffect(() => {
@@ -16,7 +18,7 @@ const Graphs = ({ sortedList }: GraphsType) => {
       newLines.push(
         <g key={i * size}>
           <line
-            opacity="0.18"
+            opacity="0.1"
             y2={maxHeight}
             x2={i * size}
             y1="0"
@@ -29,11 +31,11 @@ const Graphs = ({ sortedList }: GraphsType) => {
             fontFamily="Noto Sans JP"
             fontSize="12"
             strokeWidth="0"
-            y={size - 5}
+            y={size - 15}
             x={i * size + 5}
             stroke="#000"
             fill="#000000">
-            {i}
+            {`${i}:00`}
           </text>
         </g>,
       );
@@ -45,36 +47,34 @@ const Graphs = ({ sortedList }: GraphsType) => {
       let length = endHour - startHour;
       console.log(length);
       return (
-        <g key={e.id} className={'block_graphs'}>
-          <rect
-            rx="15"
-            height={size - 10}
-            width={length * size}
-            y={size * (i + 1)}
-            x={startHour * size}
-            strokeWidth="4"
-            className={`${e.important} ${
-              e.isFinished ||
-              `${e.date}T${e.timeEnd}` <
-                new Date().toISOString().slice(0, 10) +
-                  'T' +
-                  new Date().toLocaleString().slice(12, 17)
-                ? 'opacity_element'
-                : ''
-            }`}
-          />
-          <text
-            textAnchor="start"
-            fontFamily="Noto Sans JP"
-            fontSize="12"
-            strokeWidth="0"
-            y={size * (i + 2) - size / 2}
-            x={startHour * size + 2}
-            stroke="#000"
-            fill="#000000">
-            {e.name}
-          </text>
-        </g>
+        <div
+          key={e.id}
+          style={{
+            height: `${size - 5}px`,
+            width: `${length * size}px`,
+            top: `${size * (i + 1)}px`,
+            left: `${startHour * size}px`,
+          }}
+          className={`block_graphs ${e.important} ${
+            e.isFinished ||
+            `${e.date}T${e.timeEnd}` < currentDate + 'T' + currentTime
+              ? 'opacity_element'
+              : ''
+          }`}
+          onClick={() => {
+            setOpenedPlan({
+              id: e.id,
+              name: e.name,
+              desc: e.desc,
+              important: e.important,
+              date: e.date,
+              timeStart: e.timeStart,
+              timeEnd: e.timeEnd,
+              isFinished: e.isFinished,
+            });
+          }}>
+          {e.name}
+        </div>
       );
     });
     setBlocks(newBlocks);
@@ -83,13 +83,16 @@ const Graphs = ({ sortedList }: GraphsType) => {
   return (
     <div className={'timeline'}>
       <svg
-        width="1200"
+        width="2400"
         height={maxHeight}
         xmlns="http://www.w3.org/2000/svg"
-        onDragStart={event => event.preventDefault()}>
+        onDragStart={event => event.preventDefault()}
+        preserveAspectRatio="none">
         <g>
+          {lines}
+
           <line
-            id="svg_7"
+            className={'current_line'}
             y2={size - 5}
             x2="1200"
             y1={size - 5}
@@ -97,10 +100,26 @@ const Graphs = ({ sortedList }: GraphsType) => {
             stroke="#000"
             fill="none"
           />
-          {lines}
-          {blocks}
+          {sortedList.length &&
+            sortedList[0].date === new Date().toISOString().slice(0, 10) && (
+              <line
+                className={'current_line'}
+                strokeWidth="4"
+                y2={maxHeight}
+                x2={
+                  (+currentTime.slice(0, 2) + +currentTime.slice(3) / 60) * size
+                }
+                y1="0"
+                x1={
+                  (+currentTime.slice(0, 2) + +currentTime.slice(3) / 60) * size
+                }
+                stroke="#ff00ff"
+                fill="none"
+              />
+            )}
         </g>
       </svg>
+      {blocks}
     </div>
   );
 };

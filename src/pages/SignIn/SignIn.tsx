@@ -1,4 +1,4 @@
-import { Button, TextField, Grid } from '@mui/material';
+import { Button, TextField, Grid, Box } from '@mui/material';
 import React, { useState } from 'react';
 import {
   AuthError,
@@ -10,6 +10,7 @@ import {
 import { useDispatch } from 'react-redux';
 import { login } from '../../store/user/userSlice';
 import { db } from '../../services/db';
+import GoogleIcon from '@mui/icons-material/Google';
 
 import './SignIn.css';
 import { Link, useNavigate } from 'react-router-dom';
@@ -66,7 +67,7 @@ const SignIn = () => {
       });
   };
   return (
-    <section className={'center'}>
+    <Box className={'center around'}>
       <Grid
         container
         spacing={2}
@@ -99,29 +100,34 @@ const SignIn = () => {
             }}
           />
         </Grid>
-        <Grid item xs={6}>
-          <Button
-            variant="contained"
-            onClick={() => {
-              authWithPass();
-            }}>
-            Sign In
-          </Button>
+        <Grid item xs={5}>
+          <Grid container spacing={2}>
+            <Grid item>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  authWithPass();
+                }}>
+                Sign In
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  googleAuth();
+                }}>
+                {<GoogleIcon />}
+              </Button>
+            </Grid>
+          </Grid>
         </Grid>
-        <Grid item xs={6}>
-          <Button
-            variant="contained"
-            onClick={() => {
-              googleAuth();
-            }}>
-            Continue with Google
-          </Button>
-        </Grid>
+
         <Grid item xs={12}>
           <Link to={'../signup'}>Sign Up</Link>
         </Grid>
       </Grid>
-    </section>
+    </Box>
   );
 };
 export default SignIn;

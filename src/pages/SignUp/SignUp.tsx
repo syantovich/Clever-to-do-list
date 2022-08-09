@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Button, Grid, TextField } from '@mui/material';
+import { Button, Grid, TextField, Box } from '@mui/material';
 import { login } from '../../store/user/userSlice';
 import { Link, useNavigate } from 'react-router-dom';
 import './SignUp.css';
@@ -15,6 +15,7 @@ import { db } from '../../services/db';
 
 import * as validReg from '../../regexp/validators';
 import { toast } from 'react-toastify';
+import GoogleIcon from '@mui/icons-material/Google';
 
 const SignUp = () => {
   const [name, setName] = useState('');
@@ -105,7 +106,7 @@ const SignUp = () => {
   };
 
   return (
-    <section className={'center'}>
+    <Box className={'center around'}>
       <Grid
         container
         spacing={2}
@@ -167,29 +168,33 @@ const SignUp = () => {
             }}
           />
         </Grid>
-        <Grid item xs={6}>
-          <Button
-            variant="contained"
-            onClick={() => {
-              createUser();
-            }}>
-            Sign Up
-          </Button>
-        </Grid>
-        <Grid item xs={6}>
-          <Button
-            variant="contained"
-            onClick={() => {
-              googleAuth();
-            }}>
-            Continue with Google
-          </Button>
+        <Grid item xs={5}>
+          <Grid container spacing={2}>
+            <Grid item>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  createUser();
+                }}>
+                Sign Up
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  googleAuth();
+                }}>
+                {<GoogleIcon />}
+              </Button>
+            </Grid>
+          </Grid>
         </Grid>
         <Grid item xs={12}>
           <Link to={'../signin'}>Sign In</Link>
         </Grid>
       </Grid>
-    </section>
+    </Box>
   );
 };
 export default SignUp;

@@ -20,8 +20,12 @@ const Main = () => {
               <Route path="signup" element={<SignUp />} />
             </>
           )}
-          {name && <Route path="plans" element={<Plans />} />}
-          <Route path="/profile" element={<UserProfile />} />
+          {name && (
+            <>
+              <Route path="plans" element={<Plans />} />
+              <Route path="/profile" element={<UserProfile />} />
+            </>
+          )}
 
           <Route path="/" element={<Welcome />} />
           <Route path="*" element={<Navigate to="/" replace />} />

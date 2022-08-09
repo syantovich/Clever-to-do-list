@@ -1,3 +1,27 @@
 .block_graphs {
+  position: absolute;
+  cursor: pointer;
   overflow: hidden;
+  display: flex;
+  padding-left: 5px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  font-size: 12px;
+  color: white;
+  align-items: center;
+}
+.timeline {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  height: 100%;
+  min-width: 1200px;
+  width: 100%;
+}
+.timeline svg {
+  min-height: 100%;
+  z-index: 2;
+}
+.current_line {
+  z-index: 2;
 }

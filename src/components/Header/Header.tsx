@@ -32,7 +32,9 @@ const Header = () => {
           <Grid item xs={4}>
             <Grid container spacing={2}>
               <Grid item xs={5}>
-                <Link to="profile">{name}</Link>
+                <Button>
+                  <Link to="profile">{name}</Link>
+                </Button>
               </Grid>
             </Grid>
           </Grid>

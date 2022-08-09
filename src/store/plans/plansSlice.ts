@@ -3,7 +3,7 @@ import { IPlans } from './IPlans';
 
 const initialState: IPlans = {};
 
-export const userSlice = createSlice({
+export const plansSlice = createSlice({
   name: 'plans',
   initialState,
   reducers: {
@@ -38,6 +38,6 @@ export const userSlice = createSlice({
     },
   },
 });
-const { actions, reducer } = userSlice;
+const { actions, reducer } = plansSlice;
 export default reducer;
 export const { setPlans, addPlan, changePlansIsFinished, deletePlan } = actions;
