@@ -4,6 +4,7 @@ import { Add, CalendarMonth } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { getWorkMode } from '../../store/workMode/selector';
 import { setWorkMode } from '../../store/workMode/workModeSlice';
+import './ButtonNav.css';
 
 const ButtonNav = () => {
   const workMod = useSelector(getWorkMode);
