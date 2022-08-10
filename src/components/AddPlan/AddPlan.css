@@ -2,7 +2,7 @@
   padding: 0;
 }
 .css-46bh2p-MuiCardContent-root {
-  padding: 20px 60px;
+  box-sizing: border-box;
   border-radius: 20px;
   color: black;
 }

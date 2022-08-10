@@ -33,9 +33,9 @@ const CalendarDay = ({
         className={`day_element ${isSelected ? 'selected' : ''}`}
         onClick={() => {
           dispatch(setLoading(true));
+          dispatch(setGraphs(false));
           dispatch(setSelected(selected));
           dispatch(setWorkMode(0));
-          dispatch(setGraphs(false));
           dispatch(setLoading(false));
         }}>
         <Grid item xs={12}>

@@ -18,10 +18,9 @@ header {
 }
 main {
   width: 100%;
-  flex-grow: 1;
+  flex: 1 0 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
 }
 .App a {
   color: #8e271f;

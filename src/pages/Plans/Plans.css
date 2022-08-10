@@ -1,12 +1,17 @@
 .wrapper_plans {
   width: 100%;
-  min-height: calc(100vh - 76.5px);
+  height: 100%;
   box-sizing: border-box;
+  flex: 1 0 100%;
+}
+.wrapper_plans_grid {
+  height: 100%;
 }
 
 .wrapper_plans_content {
   width: 100%;
-  min-height: calc(100vh - 264.5px);
+  height: 100%;
+  overflow: auto;
   display: flex;
   justify-content: center;
   align-items: center;

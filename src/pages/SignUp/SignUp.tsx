@@ -106,94 +106,96 @@ const SignUp = () => {
   };
 
   return (
-    <Box className={'center around'}>
-      <Grid
-        container
-        spacing={2}
-        direction={'column'}
-        justifyContent="center"
-        alignItems="center"
-        className={'signup'}>
-        <Grid item xs={12}>
-          <TextField
-            error={errorName}
-            id="input_name"
-            label="Name"
-            variant="outlined"
-            className={'inputText'}
-            value={name}
-            onChange={value => {
-              setName(value.target.value);
-            }}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            error={errorEmail}
-            id="input_email"
-            label="Email"
-            className={'inputText'}
-            variant="outlined"
-            value={email}
-            onChange={value => {
-              setEmail(value.target.value);
-            }}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            error={errorPassword}
-            id="input_password"
-            label="password"
-            variant="outlined"
-            className={'inputText'}
-            type={'password'}
-            value={password}
-            onChange={value => {
-              setPassword(value.target.value);
-            }}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            error={errorConfirmPass}
-            id="input_confirm_password"
-            label="Confirm password"
-            variant="outlined"
-            className={'inputText'}
-            type={'password'}
-            value={confirmPass}
-            onChange={value => {
-              setConfirmPass(value.target.value);
-            }}
-          />
-        </Grid>
-        <Grid item xs={5}>
-          <Grid container spacing={2}>
-            <Grid item>
-              <Button
-                variant="contained"
-                onClick={() => {
-                  createUser();
-                }}>
-                Sign Up
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button
-                variant="contained"
-                onClick={() => {
-                  googleAuth();
-                }}>
-                {<GoogleIcon />}
-              </Button>
+    <Box className={'sign'}>
+      <Box className={'center around'}>
+        <Grid
+          container
+          spacing={2}
+          direction={'column'}
+          justifyContent="center"
+          alignItems="center"
+          className={'signup'}>
+          <Grid item xs={12}>
+            <TextField
+              error={errorName}
+              id="input_name"
+              label="Name"
+              variant="outlined"
+              className={'inputText'}
+              value={name}
+              onChange={value => {
+                setName(value.target.value);
+              }}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              error={errorEmail}
+              id="input_email"
+              label="Email"
+              className={'inputText'}
+              variant="outlined"
+              value={email}
+              onChange={value => {
+                setEmail(value.target.value);
+              }}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              error={errorPassword}
+              id="input_password"
+              label="password"
+              variant="outlined"
+              className={'inputText'}
+              type={'password'}
+              value={password}
+              onChange={value => {
+                setPassword(value.target.value);
+              }}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              error={errorConfirmPass}
+              id="input_confirm_password"
+              label="Confirm password"
+              variant="outlined"
+              className={'inputText'}
+              type={'password'}
+              value={confirmPass}
+              onChange={value => {
+                setConfirmPass(value.target.value);
+              }}
+            />
+          </Grid>
+          <Grid item xs={5}>
+            <Grid container spacing={2}>
+              <Grid item>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    createUser();
+                  }}>
+                  Sign Up
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    googleAuth();
+                  }}>
+                  {<GoogleIcon />}
+                </Button>
+              </Grid>
             </Grid>
           </Grid>
+          <Grid item xs={12}>
+            <Link to={'../signin'}>Sign In</Link>
+          </Grid>
         </Grid>
-        <Grid item xs={12}>
-          <Link to={'../signin'}>Sign In</Link>
-        </Grid>
-      </Grid>
+      </Box>
     </Box>
   );
 };

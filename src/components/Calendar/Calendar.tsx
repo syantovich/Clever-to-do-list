@@ -110,8 +110,8 @@ const Calendar = () => {
         keyboardNavigation
         items={arrOfDays}
         onSlideChanged={e => {
+          setIndexActive(e.item);
           if (days.length - 30 < e.item) {
-            setIndexActive(e.item);
             addDays();
           }
         }}

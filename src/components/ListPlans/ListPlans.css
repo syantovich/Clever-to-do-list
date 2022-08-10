@@ -6,6 +6,8 @@
   overflow: auto;
   box-sizing: border-box;
   position: relative;
+  min-height: 65vh;
+  max-height: 65vh;
 }
 .no_plan {
   width: 100%;
@@ -14,6 +16,7 @@
   justify-content: center;
   align-items: center;
   font-size: 2rem;
+  min-height: calc(65vh - 100px);
 }
 
 .switch_graphs {

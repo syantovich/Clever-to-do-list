@@ -38,7 +38,7 @@ const AddPlan = ({ defaultObj, setIsEdit, setOpenedPlan }: AddPlanType) => {
     defaultObj?.timeEnd || '10:30',
   );
   return (
-    <Card sx={{ width: 275, paddingLeft: 2, paddingRight: 2 }}>
+    <Card sx={{ minWidth: 275, paddingLeft: 2, paddingRight: 2 }}>
       <CardContent className={'inputs'}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
@@ -121,7 +121,7 @@ const AddPlan = ({ defaultObj, setIsEdit, setOpenedPlan }: AddPlanType) => {
           </Grid>
         </Grid>
       </CardContent>
-      <CardActions>
+      <CardActions className={'inputs'}>
         <Button
           onClick={() => {
             if (timeStart <= timeEnd && name.length) {

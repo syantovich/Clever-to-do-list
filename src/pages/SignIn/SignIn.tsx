@@ -67,66 +67,68 @@ const SignIn = () => {
       });
   };
   return (
-    <Box className={'center around'}>
-      <Grid
-        container
-        spacing={2}
-        direction={'column'}
-        justifyContent="center"
-        alignItems="center"
-        className={'signin'}>
-        <Grid item xs={12}>
-          <TextField
-            id="input_email"
-            label="Email"
-            variant="outlined"
-            className={'inputText'}
-            value={email}
-            onChange={value => {
-              setEmail(value.target.value);
-            }}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            id="input_password"
-            label="password"
-            variant="outlined"
-            type={'password'}
-            className={'inputText'}
-            value={password}
-            onChange={value => {
-              setPassword(value.target.value);
-            }}
-          />
-        </Grid>
-        <Grid item xs={5}>
-          <Grid container spacing={2}>
-            <Grid item>
-              <Button
-                variant="contained"
-                onClick={() => {
-                  authWithPass();
-                }}>
-                Sign In
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button
-                variant="contained"
-                onClick={() => {
-                  googleAuth();
-                }}>
-                {<GoogleIcon />}
-              </Button>
+    <Box className={'sign'}>
+      <Box className={'center around'}>
+        <Grid
+          container
+          spacing={2}
+          direction={'column'}
+          justifyContent="center"
+          alignItems="center"
+          className={'signin'}>
+          <Grid item xs={12}>
+            <TextField
+              id="input_email"
+              label="Email"
+              variant="outlined"
+              className={'inputText'}
+              value={email}
+              onChange={value => {
+                setEmail(value.target.value);
+              }}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              id="input_password"
+              label="password"
+              variant="outlined"
+              type={'password'}
+              className={'inputText'}
+              value={password}
+              onChange={value => {
+                setPassword(value.target.value);
+              }}
+            />
+          </Grid>
+          <Grid item xs={5}>
+            <Grid container spacing={2}>
+              <Grid item>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    authWithPass();
+                  }}>
+                  Sign In
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    googleAuth();
+                  }}>
+                  {<GoogleIcon />}
+                </Button>
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
 
-        <Grid item xs={12}>
-          <Link to={'../signup'}>Sign Up</Link>
+          <Grid item xs={12}>
+            <Link to={'../signup'}>Sign Up</Link>
+          </Grid>
         </Grid>
-      </Grid>
+      </Box>
     </Box>
   );
 };
