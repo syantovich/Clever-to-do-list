@@ -34,11 +34,6 @@ main {
   background-color: #d00101;
   color: white;
 }
-.App .MuiButton-root:focus {
-  background-color: #d00101;
-  color: white;
-  border: #d00101 2px solid;
-}
 
 .App .css-sghohy-MuiButtonBase-root-MuiButton-root {
   background-color: #ff611a;

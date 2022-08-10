@@ -18,7 +18,7 @@ const Calendar = () => {
   const selected = useSelector(getSelected);
   const dispatch = useDispatch();
   let plans: IPlans = {};
-  console.log(plans);
+
   const [nextMonth, setNextMonth] = useState(new Date().getMonth());
   const [days, setDays] = useState<string[]>([]);
   const [arrOfDays, setArrOfDays] = useState<JSX.Element[]>([]);
@@ -42,7 +42,6 @@ const Calendar = () => {
     let nextMonthArr: JSX.Element[] = [];
     const addingDays: string[] = [];
     let year = new Date().getFullYear();
-    console.log(plans);
     let copyPlans = { ...plans };
 
     for (
@@ -68,8 +67,6 @@ const Calendar = () => {
           // copyPlans[key] = result.data();
 
           for (let day in res) copyPlans[key][day] = res[day];
-          console.log(copyPlans);
-          console.log(result.data());
         }
       })
       .finally(() => {
@@ -94,7 +91,6 @@ const Calendar = () => {
   useEffect(() => {
     dispatch(setLoading(true));
     addDays();
-    console.log(false);
   }, []);
   return (
     <Stack

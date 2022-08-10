@@ -54,8 +54,6 @@ const ListPlans = () => {
           );
         }),
       );
-      console.log('----');
-      console.log(sortedArr);
     }
   }, [selected, plans]);
   return isLoading ? (

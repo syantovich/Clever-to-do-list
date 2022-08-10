@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import './Plans.css';
 import Calendar from '../../components/Calendar/Calendar';
 import { Grid } from '@mui/material';
@@ -12,9 +12,6 @@ import { isLoadingSelector } from '../../store/isLoading/selector';
 const Plans = () => {
   const workMod = useSelector(getWorkMode);
   const isLoading = useSelector(isLoadingSelector);
-  useEffect(() => {
-    console.log(workMod);
-  }, [workMod]);
   return (
     <Grid
       container

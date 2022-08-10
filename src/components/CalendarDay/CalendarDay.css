@@ -5,6 +5,7 @@
   border-radius: 5px;
   border: 1px solid black;
   cursor: pointer;
+  position: relative;
 }
 .selected {
   background-color: black;
@@ -15,4 +16,15 @@
 }
 .day_element .day_of {
   color: #a83411;
+}
+.circle_important {
+  width: 5px;
+  height: 5px;
+  border-radius: 100%;
+}
+.icons_important {
+  width: 90%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
 }

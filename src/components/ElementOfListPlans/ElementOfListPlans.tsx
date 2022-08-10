@@ -62,9 +62,6 @@ const ElementOfListPlans = ({
                 error: 'error',
                 success: 'ok',
               })
-              .then(result => {
-                console.log(result);
-              })
               .catch(ev => console.log(ev));
           }}>
           <DeleteIcon />

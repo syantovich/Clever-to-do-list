@@ -1,14 +1,14 @@
-.wrapper_plans_content .important {
+.App .important {
   background-color: #f7c832;
   border: 2px solid #f7c832;
   fill: #f7c832;
 }
-.wrapper_plans_content .very_important {
+.App .very_important {
   background-color: #ff8c2c;
   border: 2px solid #ff8c2c;
   fill: #ff8c2c;
 }
-.wrapper_plans_content .not_matter {
+.App .not_matter {
   background-color: #1aaf63;
   border: 2px solid #1aaf63;
   fill: #1aaf63;

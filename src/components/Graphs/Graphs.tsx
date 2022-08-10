@@ -41,11 +41,10 @@ const Graphs = ({ sortedList, setOpenedPlan }: GraphsType) => {
       );
     }
     newBlocks = sortedList.map((e, i) => {
-      console.log(e);
       const startHour = +e.timeStart.slice(0, 2) + +e.timeStart.slice(3) / 60;
       const endHour = +e.timeEnd.slice(0, 2) + +e.timeEnd.slice(3) / 60;
       let length = endHour - startHour;
-      console.log(length);
+
       return (
         <div
           key={e.id}
@@ -73,7 +72,7 @@ const Graphs = ({ sortedList, setOpenedPlan }: GraphsType) => {
               isFinished: e.isFinished,
             });
           }}>
-          {e.name}
+          {e.name.split(' ').join('\u00A0')}
         </div>
       );
     });

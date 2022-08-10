@@ -27,7 +27,6 @@ const OneCard = ({
   const { email } = useSelector(userSelector);
   const [isEnd, setIsEnd] = useState(isFinished);
   const dispatch = useDispatch();
-  console.log(setIsEdit);
   const setFinished = (is: boolean) => {
     toast
       .promise(

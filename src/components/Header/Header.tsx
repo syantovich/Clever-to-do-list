@@ -24,18 +24,18 @@ const Header = () => {
           </div>
         </Grid>
         <Grid item xs={3}>
-          <Button>
-            <Link to={name ? 'plans' : 'signin'}>Plans</Link>
-          </Button>
+          <Link to={name ? 'plans' : 'signin'}>
+            <Button>Plans</Button>
+          </Link>
         </Grid>
         <Grid item>
           {name ? (
-            <Button>
-              <Link to="profile">{name}</Link>
-            </Button>
+            <Link to="profile">
+              <Button>{name}</Button>
+            </Link>
           ) : (
             <Grid container spacing={2}>
-              <Grid item xs={6}>
+              <Grid item xs={5}>
                 <Button variant={'text'} onClick={() => navigate('./signin')}>
                   Sign In
                 </Button>
