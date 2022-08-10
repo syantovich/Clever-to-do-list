@@ -7,6 +7,7 @@ import './SignUp.css';
 import {
   getAuth,
   createUserWithEmailAndPassword,
+  signInWithRedirect,
   AuthError,
   GoogleAuthProvider,
   signInWithPopup,
@@ -86,7 +87,7 @@ const SignUp = () => {
         navigator.userAgent,
       )
     ) {
-      toast.error("Can't login with Google in Mobile ");
+      signInWithRedirect(auth, google);
     } else {
       signInWithPopup(auth, google)
         .then(result => {

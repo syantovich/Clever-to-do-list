@@ -11,6 +11,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../store/user/userSlice';
 import './UserProfile.css';
+import { getAuth, signOut } from 'firebase/auth';
 
 const UserProfile = () => {
   const { name, email, uid } = useSelector(userSelector);
@@ -43,8 +44,11 @@ const UserProfile = () => {
           <Button
             size="small"
             onClick={() => {
-              dispatch(logout());
-              navigate('../');
+              let auth = getAuth();
+              signOut(auth).then(() => {
+                dispatch(logout());
+                navigate('../');
+              });
             }}>
             Sign Out
           </Button>

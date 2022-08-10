@@ -6,6 +6,7 @@ import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
+  signInWithRedirect,
 } from 'firebase/auth';
 import { useDispatch } from 'react-redux';
 import { login } from '../../store/user/userSlice';
@@ -54,7 +55,7 @@ const SignIn = () => {
         navigator.userAgent,
       )
     ) {
-      toast.error("Can't login with Google in Mobile ");
+      signInWithRedirect(auth, google);
     } else {
       signInWithPopup(auth, google)
         .then(result => {
