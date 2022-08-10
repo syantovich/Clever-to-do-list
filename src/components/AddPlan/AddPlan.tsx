@@ -65,7 +65,6 @@ const AddPlan = ({ defaultObj, setIsEdit, setOpenedPlan }: AddPlanType) => {
             <TextField
               select
               label={'Important'}
-              fullWidth
               onChange={e => setImportant(e.target.value)}
               defaultValue={important}>
               {importance.map(option => (
