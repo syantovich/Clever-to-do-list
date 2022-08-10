@@ -6,8 +6,9 @@ import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { toast } from 'react-toastify';
 import { db } from '../../services/db';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { userSelector } from '../../store/user/selector';
+import { deletePlan } from '../../store/plans/plansSlice';
 
 const ElementOfListPlans = ({
   id,
@@ -23,6 +24,7 @@ const ElementOfListPlans = ({
 }: ElementOfListPlansType) => {
   const disabled = isFinished || `${addingDate}T${timeEnd}` < date;
   const { email } = useSelector(userSelector);
+  const dispatch = useDispatch();
   return (
     <Box
       className={`${important} element_of_plan ${
@@ -61,6 +63,9 @@ const ElementOfListPlans = ({
                 pending: 'deleting',
                 error: 'error',
                 success: 'ok',
+              })
+              .then(() => {
+                dispatch(deletePlan({ date: addingDate, id }));
               })
               .catch(ev => console.log(ev));
           }}>
