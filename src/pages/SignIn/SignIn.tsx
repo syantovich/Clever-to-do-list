@@ -49,22 +49,29 @@ const SignIn = () => {
   const googleAuth = () => {
     const auth = getAuth();
     const google = new GoogleAuthProvider();
-
-    signInWithPopup(auth, google)
-      .then(result => {
-        dispatch(
-          login({
-            email: result.user.email,
-            name: result.user.displayName,
-            uid: result.user.uid,
-          }),
-        );
-        navigate('../');
-        toast.success('Entered');
-      })
-      .catch((error: AuthError) => {
-        toast.error(error.message);
-      });
+    if (
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(
+        navigator.userAgent,
+      )
+    ) {
+      toast.error("Can't login with Google in Mobile ");
+    } else {
+      signInWithPopup(auth, google)
+        .then(result => {
+          dispatch(
+            login({
+              email: result.user.email,
+              name: result.user.displayName,
+              uid: result.user.uid,
+            }),
+          );
+          navigate('../');
+          toast.success('Entered');
+        })
+        .catch((error: AuthError) => {
+          toast.error(error.message);
+        });
+    }
   };
   return (
     <Box className={'sign'}>

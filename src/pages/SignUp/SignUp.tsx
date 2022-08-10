@@ -81,28 +81,29 @@ const SignUp = () => {
   const googleAuth = (): void => {
     const auth = getAuth();
     const google = new GoogleAuthProvider();
-    signInWithPopup(auth, google)
-      .then(result => {
-        let obj = {
-          email: result.user.email,
-          name: result.user.displayName,
-          uid: result.user.uid,
-        };
-        dispatch(login(obj));
-        navigate('../');
-        toast.success('Entered');
-        return result;
-      })
-      .then(result =>
-        db.setUserInfo(
-          result.user.displayName,
-          result.user.email,
-          result.user.uid,
-        ),
+    if (
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(
+        navigator.userAgent,
       )
-      .catch((error: AuthError) => {
-        toast.error(error.message);
-      });
+    ) {
+      toast.error("Can't login with Google in Mobile ");
+    } else {
+      signInWithPopup(auth, google)
+        .then(result => {
+          dispatch(
+            login({
+              email: result.user.email,
+              name: result.user.displayName,
+              uid: result.user.uid,
+            }),
+          );
+          navigate('../');
+          toast.success('Entered');
+        })
+        .catch((error: AuthError) => {
+          toast.error(error.message);
+        });
+    }
   };
 
   return (
