@@ -18,12 +18,12 @@ const Header = () => {
         justifyContent="flex-start"
         alignItems="stretch"
         className={'button_entry'}>
-        <Grid item xs={4}>
+        <Grid item>
           <div className={'logo'} onClick={() => navigate('../')}>
             <img src={logo} alt="logo" height={'100%'} /> Plan your day
           </div>
         </Grid>
-        <Grid item xs={3}>
+        <Grid item>
           <Link to={name ? 'plans' : 'signin'}>
             <Button>Plans</Button>
           </Link>
@@ -31,7 +31,7 @@ const Header = () => {
         <Grid item>
           {name ? (
             <Link to="profile">
-              <Button>{name}</Button>
+              <Button>Profile</Button>
             </Link>
           ) : (
             <Grid container spacing={2}>

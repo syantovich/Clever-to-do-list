@@ -133,8 +133,13 @@ const AddPlan = ({ defaultObj, setIsEdit, setOpenedPlan }: AddPlanType) => {
                   })
                   .then(() => {
                     setOldDate(addingDate);
-                    setIsEdit(false);
-                    setOpenedPlan(null);
+                    if (setIsEdit) {
+                      setIsEdit(false);
+                    }
+                    if (setOpenedPlan) {
+                      setOpenedPlan(null);
+                    }
+
                     dispatch(deletePlan({ date: oldDate, id: uuid }));
                   });
               }

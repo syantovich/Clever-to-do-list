@@ -1,3 +1,4 @@
+import { IinfoPlan } from '../../pages/Plans/IinfoPlan';
 export type OneCardType = {
   name: string;
   id: string;
@@ -7,6 +8,6 @@ export type OneCardType = {
   timeStart: string;
   timeEnd: string;
   isFinished: boolean;
-  setOpenedPlan: any;
+  setOpenedPlan: React.Dispatch<React.SetStateAction<IinfoPlan | null>>;
   date: string;
 };
