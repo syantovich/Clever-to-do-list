@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import './Plans.css';
 import Calendar from '../../components/Calendar/Calendar';
 import { Grid } from '@mui/material';
@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 import { getWorkMode } from '../../store/workMode/selector';
 import { isLoadingSelector } from '../../store/isLoading/selector';
 
-const Plans = () => {
+const Plans = memo(() => {
   const workMod = useSelector(getWorkMode);
   const isLoading = useSelector(isLoadingSelector);
   return (
@@ -35,5 +35,6 @@ const Plans = () => {
       </Grid>
     </Grid>
   );
-};
+});
+Plans.displayName = 'Plans';
 export default Plans;

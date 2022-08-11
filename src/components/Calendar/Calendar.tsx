@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import { Stack } from '@mui/material';
 import { currDayInMonth, dayInWeek, daysInMonth } from '../../constants';
 import CalendarDay from '../CalendarDay/CalendarDay';
@@ -13,7 +13,7 @@ import { setPlans } from '../../store/plans/plansSlice';
 import { getSelected } from '../../store/workMode/selector';
 import { IPlans } from '../../store/plans/IPlans';
 
-const Calendar = () => {
+const Calendar = memo(() => {
   const { email } = useSelector(userSelector);
   const selected = useSelector(getSelected);
   const dispatch = useDispatch();
@@ -114,5 +114,6 @@ const Calendar = () => {
       />
     </Stack>
   );
-};
+});
+Calendar.displayName = 'Calendar';
 export default Calendar;
