@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import ElementOfListPlans from '../ElementOfListPlans/ElementOfListPlans';
 import { IinfoPlan } from '../../pages/Plans/IinfoPlan';
@@ -16,6 +16,7 @@ const ListPlans = () => {
   const [openedPlan, setOpenedPlan] = useState<IinfoPlan | null>(null);
   const sortedList = usePlansToSortedArr();
   const switchGraphs = useSelector(isGraphs);
+  const memSetOpenedPlan = useCallback(setOpenedPlan, [openedPlan]);
   const dispatch = useDispatch();
   const currTime =
     new Date().toISOString().slice(0, 10) +
@@ -42,12 +43,12 @@ const ListPlans = () => {
           openedPlan ? (
             <OneCard
               {...openedPlan}
-              setOpenedPlan={setOpenedPlan}
+              setOpenedPlan={memSetOpenedPlan}
               addingDate={openedPlan.date}
               date={currTime}
             />
           ) : switchGraphs ? (
-            <Graphs sortedList={sortedList} setOpenedPlan={setOpenedPlan} />
+            <Graphs sortedList={sortedList} setOpenedPlan={memSetOpenedPlan} />
           ) : (
             <Grid container spacing={2}>
               {sortedList.map(e => {
@@ -55,7 +56,7 @@ const ListPlans = () => {
                   <Grid item xs={12} key={e.id}>
                     <ElementOfListPlans
                       {...e}
-                      setOpenedPlan={setOpenedPlan}
+                      setOpenedPlan={memSetOpenedPlan}
                       addingDate={e.date}
                       date={currTime}
                     />

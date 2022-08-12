@@ -27,7 +27,6 @@ function App() {
     <div className="App">
       <Header />
       <Main />
-      <footer />
       <ToastContainer
         position="top-center"
         autoClose={2000}

@@ -1,14 +1,14 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { userSelector } from '../../store/user/selector';
-import { Grid, Button } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
+import { Grid } from '@mui/material';
 import './Header.css';
-import logo from '../../img/Time Square.svg';
+import Logo from '../Logo/Logo';
+import ButtonLink from '../ButtonLink/ButtonLink';
+import ButtonSign from '../ButtonsSing/ButtonSign';
 
 const Header = () => {
   const { name } = useSelector(userSelector);
-  const navigate = useNavigate();
   return (
     <header>
       <Grid
@@ -19,33 +19,16 @@ const Header = () => {
         alignItems="stretch"
         className={'button_entry'}>
         <Grid item>
-          <div className={'logo'} onClick={() => navigate('../')}>
-            <img src={logo} alt="logo" height={'100%'} /> Plan your day
-          </div>
+          <Logo />
         </Grid>
         <Grid item>
-          <Link to={name ? 'plans' : 'signin'}>
-            <Button>Plans</Button>
-          </Link>
+          <ButtonLink to={name ? 'plans' : 'signin'}>Plans</ButtonLink>
         </Grid>
         <Grid item>
           {name ? (
-            <Link to="profile">
-              <Button>Profile</Button>
-            </Link>
+            <ButtonLink to={'profile'}>Profile</ButtonLink>
           ) : (
-            <Grid container spacing={2}>
-              <Grid item xs={5}>
-                <Button variant={'text'} onClick={() => navigate('./signin')}>
-                  Sign In
-                </Button>
-              </Grid>
-              <Grid item xs={5}>
-                <Button variant={'text'} onClick={() => navigate('./signup')}>
-                  Sign Up
-                </Button>
-              </Grid>
-            </Grid>
+            <ButtonSign />
           )}
         </Grid>
       </Grid>
