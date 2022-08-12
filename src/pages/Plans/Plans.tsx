@@ -3,11 +3,10 @@ import './Plans.css';
 import Calendar from '../../components/Calendar/Calendar';
 import { Grid } from '@mui/material';
 import ButtonNav from '../../components/ButtonNav/ButtonNav';
-import AddPlan from '../../components/AddPlan/AddPlan';
-import ListPlans from '../../components/ListPlans/ListPlans';
 import { useSelector } from 'react-redux';
 import { getWorkMode } from '../../store/workMode/selector';
 import { isLoadingSelector } from '../../store/isLoading/selector';
+import WorkModeProxy from '../../components/workModeProxy/WorkModeProxy';
 
 const Plans = memo(() => {
   const workMod = useSelector(getWorkMode);
@@ -22,8 +21,7 @@ const Plans = memo(() => {
       wrap={'nowrap'}
       className={'wrapper_plans_grid'}>
       <Grid item xs={7} className={'wrapper_plans_content'}>
-        {workMod === 1 && <AddPlan />}
-        {workMod === 0 && <ListPlans />}
+        <WorkModeProxy workMode={workMod} />
       </Grid>
       {!isLoading && (
         <Grid item xs={1}>
