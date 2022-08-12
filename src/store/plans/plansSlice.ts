@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { IPlans } from './IPlans';
+import processingData from '../../helpers/ProcessingData';
 
 const initialState: IPlans = {};
 
@@ -7,24 +8,21 @@ export const plansSlice = createSlice({
   name: 'plans',
   initialState,
   reducers: {
-    addPlan: (state, action) => {
-      if (!state[action.payload.date.slice(0, 7)]) {
-        state[action.payload.date.slice(0, 7)] = {};
+    addPlan: (state, { payload }) => {
+      let month = processingData.toYearMont(payload.date);
+      let day = processingData.getDay(payload.date);
+      if (!state[month]) {
+        state[month] = {};
       }
-      if (
-        !state[action.payload.date.slice(0, 7)][action.payload.date.slice(8)]
-      ) {
-        state[action.payload.date.slice(0, 7)][action.payload.date.slice(8)] =
-          {};
+      if (!state[month][day]) {
+        state[month][day] = {};
       }
-      state[action.payload.date.slice(0, 7)][action.payload.date.slice(8)][
-        action.payload.id
-      ] = action.payload;
+      state[month][day][payload.id] = payload;
     },
-    deletePlan: (state, action) => {
-      delete state[action.payload.date.slice(0, 7)][
-        action.payload.date.slice(8)
-      ][action.payload.id];
+    deletePlan: (state, { payload: { date, id } }) => {
+      let month = processingData.toYearMont(date);
+      let day = processingData.getDay(date);
+      delete state[month][day][id];
     },
     setPlans: (state, action) => {
       for (let key in action.payload) {

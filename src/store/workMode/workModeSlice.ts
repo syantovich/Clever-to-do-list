@@ -3,7 +3,7 @@ import { IWorkMode } from './IWorkMode';
 
 const initialState: IWorkMode = {
   workMode: 0,
-  selected: new Date().toISOString().slice(0, 10),
+  selected: new Date(),
 };
 export const userSlice = createSlice({
   name: 'workMode',

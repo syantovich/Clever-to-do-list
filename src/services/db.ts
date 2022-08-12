@@ -13,6 +13,7 @@ import '../firebase';
 import { getDoc } from 'firebase/firestore';
 import { IinfoPlan } from '../pages/Plans/IinfoPlan';
 import { PlanType } from './db.type';
+import processingData from '../helpers/ProcessingData';
 
 class Db {
   db: Firestore;
@@ -37,10 +38,10 @@ class Db {
     return getDoc(doc(this.db, email, month));
   }
 
-  async deletePlan(email: string, date: string, id: string) {
-    let collecton = date.slice(0, 7);
+  async deletePlan(email: string, date: Date, id: string) {
+    let collecton = processingData.toYearMont(date);
     let delObj: any = {};
-    delObj[`${date.slice(8)}.${id}`] = deleteField();
+    delObj[`${processingData.getDay(date)}.${id}`] = deleteField();
     return updateDoc(doc(this.db, email, collecton), delObj);
   }
 
@@ -55,8 +56,8 @@ class Db {
     id,
     isFinished,
   }: PlanType) {
-    let collecton = date.slice(0, 7);
-    let keyInCollection = date.slice(8);
+    let collecton = processingData.toYearMont(date);
+    let keyInCollection = processingData.getDay(date);
     let obj: any = {};
     obj[`${keyInCollection}.${id}`] = {
       name,
@@ -82,8 +83,8 @@ class Db {
     id,
     isFinished,
   }: PlanType) {
-    let collecton = date.slice(0, 7);
-    let keyInCollection = date.slice(8);
+    let collecton = processingData.toYearMont(date);
+    let keyInCollection = processingData.getDay(date);
     let addingObj: { [key: string]: IinfoPlan } = {};
     addingObj[id] = {
       name,

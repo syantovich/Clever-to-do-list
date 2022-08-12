@@ -10,6 +10,7 @@ import './OneCard.css';
 import { changePlansIsFinished } from '../../store/plans/plansSlice';
 import AddPlan from '../AddPlan/AddPlan';
 import EditIcon from '@mui/icons-material/Edit';
+import processingData from '../../helpers/ProcessingData';
 
 const OneCard = ({
   id,
@@ -46,8 +47,8 @@ const OneCard = ({
       .then(() => {
         dispatch(
           changePlansIsFinished({
-            month: addingDate.slice(0, 7),
-            day: addingDate.slice(8),
+            month: processingData.toYearMont(addingDate),
+            day: processingData.getDay(addingDate),
             id,
             is,
           }),
@@ -73,7 +74,7 @@ const OneCard = ({
             </Typography>
             <Typography>Date:</Typography>
             <Typography variant="h6" gutterBottom component="div">
-              {addingDate}
+              {addingDate.toISOString()}
             </Typography>
             <Typography>Description:</Typography>
             <Typography variant="h6" gutterBottom component="div">

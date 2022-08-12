@@ -3,7 +3,7 @@ export interface IinfoPlan {
   name: string;
   desc: string;
   important: string;
-  date: string;
+  date: Date;
   timeStart: string;
   timeEnd: string;
   isFinished: boolean;

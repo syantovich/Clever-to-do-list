@@ -4,7 +4,7 @@ export type OneCardType = {
   id: string;
   desc: string;
   important: string;
-  addingDate: string;
+  addingDate: Date;
   timeStart: string;
   timeEnd: string;
   isFinished: boolean;

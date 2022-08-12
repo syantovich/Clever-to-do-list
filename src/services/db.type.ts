@@ -3,7 +3,7 @@ export type PlanType = {
   name: string;
   desc: string;
   important: string;
-  date: string;
+  date: Date;
   timeStart: string;
   timeEnd: string;
   id: string;

@@ -101,18 +101,17 @@ const Graphs = ({ sortedList, setOpenedPlan }: GraphsType) => {
           />
         </g>
       </svg>{' '}
-      {sortedList.length &&
-        sortedList[0].date === new Date().toISOString().slice(0, 10) && (
-          <div
-            className={'current_line'}
-            style={{
-              height: `${maxHeight}px`,
-              left: `${
-                (+currentTime.slice(0, 2) + +currentTime.slice(3) / 60) * size
-              }px`,
-            }}
-          />
-        )}
+      {sortedList.length && sortedList[0].date === new Date(currentDate) && (
+        <div
+          className={'current_line'}
+          style={{
+            height: `${maxHeight}px`,
+            left: `${
+              (+currentTime.slice(0, 2) + +currentTime.slice(3) / 60) * size
+            }px`,
+          }}
+        />
+      )}
       {blocks}
     </div>
   );

@@ -3,5 +3,5 @@ export interface ICalendarDay {
   dayOfMonth: number;
   month: number;
   isSelected: boolean;
-  selected: string;
+  selected: Date;
 }

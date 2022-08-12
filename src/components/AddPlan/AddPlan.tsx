@@ -18,6 +18,7 @@ import { userSelector } from '../../store/user/selector';
 import { addPlan, deletePlan } from '../../store/plans/plansSlice';
 import { getSelected } from '../../store/workMode/selector';
 import './AddPlan.css';
+import processingData from '../../helpers/ProcessingData';
 
 const AddPlan = memo(
   ({ defaultObj, setIsEdit, setOpenedPlan }: AddPlanType) => {
@@ -79,8 +80,8 @@ const AddPlan = memo(
               <TextField
                 label="Date"
                 type="date"
-                defaultValue={addingDate}
-                onChange={e => setAddingDate(e.target.value)}
+                defaultValue={processingData.getDateWithoutHour(addingDate)}
+                onChange={e => setAddingDate(new Date(e.target.value))}
                 sx={{ width: 150 }}
                 InputLabelProps={{
                   shrink: true,

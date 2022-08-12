@@ -12,6 +12,7 @@ import { setLoading } from '../../store/isLoading/isLoadingSlice';
 import { setPlans } from '../../store/plans/plansSlice';
 import { getSelected } from '../../store/workMode/selector';
 import { IPlans } from '../../store/plans/IPlans';
+import processingData from '../../helpers/ProcessingData';
 
 const Calendar = memo(() => {
   const { email } = useSelector(userSelector);
@@ -20,19 +21,20 @@ const Calendar = memo(() => {
   let plans: IPlans = {};
 
   const [nextMonth, setNextMonth] = useState(new Date().getMonth());
-  const [days, setDays] = useState<string[]>([]);
+  const [days, setDays] = useState<Date[]>([]);
   const [arrOfDays, setArrOfDays] = useState<JSX.Element[]>([]);
   const [indexActive, setIndexActive] = useState(0);
   const update = (i: number, month: number, newYear: number): JSX.Element => {
-    let selectedDate = new Date(newYear, month, i + 1)
-      .toISOString()
-      .slice(0, 10);
+    let selectedDate = new Date(newYear, month, i + 1);
     return (
       <CalendarDay
         dayOfWeek={dayInWeek(newYear, month, i)}
         dayOfMonth={i}
         selected={selectedDate}
-        isSelected={selectedDate === selected}
+        isSelected={
+          processingData.getDateWithoutHour(selectedDate) ===
+          processingData.getDateWithoutHour(selected)
+        }
         month={month}
         key={`${month} ${i}`}
       />
@@ -40,7 +42,7 @@ const Calendar = memo(() => {
   };
   const addDays = () => {
     let nextMonthArr: JSX.Element[] = [];
-    const addingDays: string[] = [];
+    const addingDays: Date[] = [];
     let year = new Date().getFullYear();
     let copyPlans = { ...plans };
 
@@ -49,13 +51,16 @@ const Calendar = memo(() => {
       i <= daysInMonth(nextMonth + 1, year);
       i++
     ) {
-      let date = new Date(year, nextMonth, i + 1).toISOString().slice(0, 10);
+      let date = new Date(year, nextMonth, i + 1);
+
       addingDays.push(date);
-      if (!copyPlans[date.slice(0, 7)]) {
-        copyPlans[date.slice(0, 7)] = {};
+      const month = processingData.toYearMont(date);
+      const day = processingData.getDay(date);
+      if (!copyPlans[month]) {
+        copyPlans[month] = {};
       }
 
-      copyPlans[date.slice(0, 7)][date.slice(8)] = {};
+      copyPlans[month][day] = {};
       nextMonthArr.push(update(i, nextMonth, year));
     }
 
@@ -64,8 +69,6 @@ const Calendar = memo(() => {
       .then(result => {
         let res = result.data();
         if (res !== undefined) {
-          // copyPlans[key] = result.data();
-
           for (let day in res) copyPlans[key][day] = res[day];
         }
       })
@@ -80,10 +83,10 @@ const Calendar = memo(() => {
   useEffect(() => {
     let arr: JSX.Element[] = [];
     for (let i = 0; i < days.length; i++) {
-      const day = +days[i].slice(8);
-      const month = +days[i].slice(5, 7);
-      const newYear = +days[i].slice(0, 4);
-      arr[i] = update(day, month - 1, newYear);
+      const day = days[i].getDate() - 1;
+      const month = days[i].getMonth();
+      const newYear = days[i].getFullYear();
+      arr[i] = update(day, month, newYear);
     }
     setArrOfDays(arr);
   }, [selected]);

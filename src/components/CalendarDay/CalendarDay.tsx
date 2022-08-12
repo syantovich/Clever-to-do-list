@@ -8,6 +8,7 @@ import { setSelected, setWorkMode } from '../../store/workMode/workModeSlice';
 import { setGraphs } from '../../store/switchGraphs/switchGraphsSlice';
 import { setLoading } from '../../store/isLoading/isLoadingSlice';
 import { getPlans } from '../../store/plans/selector';
+import processingData from '../../helpers/ProcessingData';
 
 const CalendarDay = memo(
   ({ dayOfWeek, dayOfMonth, month, isSelected, selected }: ICalendarDay) => {
@@ -17,20 +18,22 @@ const CalendarDay = memo(
     const [isImportant, setIsImportant] = useState(false);
     const [isVeryImportant, setIsVeryImportant] = useState(false);
     useEffect(() => {
-      if (plans[selected.slice(0, 7)]) {
-        if (plans[selected.slice(0, 7)][selected.slice(8)]) {
+      const yearMonth = processingData.toYearMont(selected);
+      const day = processingData.getDay(selected);
+      if (plans[yearMonth]) {
+        if (plans[yearMonth][day]) {
           setIsNotImportant(
-            Object.values(plans[selected.slice(0, 7)][selected.slice(8)]).some(
+            Object.values(plans[yearMonth][day]).some(
               e => e.important === importance[0].value,
             ),
           );
           setIsImportant(
-            Object.values(plans[selected.slice(0, 7)][selected.slice(8)]).some(
+            Object.values(plans[yearMonth][day]).some(
               e => e.important === importance[1].value,
             ),
           );
           setIsVeryImportant(
-            Object.values(plans[selected.slice(0, 7)][selected.slice(8)]).some(
+            Object.values(plans[yearMonth][day]).some(
               e => e.important === importance[2].value,
             ),
           );
@@ -54,8 +57,6 @@ const CalendarDay = memo(
             alignItems="center"
             className={`day_element ${isSelected ? 'selected' : ''}`}
             onClick={() => {
-              console.log(dayOfWeek, dayOfMonth, month, isSelected, selected);
-              console.log(plans);
               dispatch(setLoading(true));
               dispatch(setGraphs(false));
               dispatch(setSelected(selected));
