@@ -14,13 +14,12 @@ const Main = () => {
     <main>
       <Routes>
         <Route>
-          {!name && (
+          {name ? (
             <>
               <Route path="signin" element={<SignIn />} />
               <Route path="signup" element={<SignUp />} />
             </>
-          )}
-          {name && (
+          ) : (
             <>
               <Route path="plans" element={<Plans />} />
               <Route path="/profile" element={<UserProfile />} />

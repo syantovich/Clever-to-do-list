@@ -78,7 +78,7 @@ const OneCard = ({
             </Typography>
             <Typography>Description:</Typography>
             <Typography variant="h6" gutterBottom component="div">
-              {desc}
+              {desc && ''}
             </Typography>
             <Typography>Time start:</Typography>
             <Typography variant="h6" gutterBottom component="div">

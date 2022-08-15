@@ -5,6 +5,7 @@ import { getPlans } from '../store/plans/selector';
 import { isLoadingSelector } from '../store/isLoading/selector';
 import { getSelected } from '../store/workMode/selector';
 import processingData from '../helpers/ProcessingData';
+import { IsLoadingEnum } from '../store/isLoading/isLoadingSlice';
 
 export const usePlansToSortedArr = () => {
   const plans = useSelector(getPlans);
@@ -12,7 +13,7 @@ export const usePlansToSortedArr = () => {
   const isLoading = useSelector(isLoadingSelector);
   const [arr, setArr] = useState<IinfoPlan[]>([]);
   useEffect(() => {
-    if (!isLoading) {
+    if (isLoading === IsLoadingEnum.success) {
       let month = processingData.toYearMont(selected);
       let day = processingData.getDay(selected);
       let arrOfValues: IinfoPlan[] = Object.values(plans[month][day]);

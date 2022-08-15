@@ -9,11 +9,11 @@ export const userSlice = createSlice({
   name: 'workMode',
   initialState,
   reducers: {
-    setWorkMode: (state, action) => {
-      state.workMode = action.payload;
+    setWorkMode: (state, { payload }: { payload: number }) => {
+      state.workMode = payload;
     },
-    setSelected: (state, action) => {
-      state.selected = action.payload;
+    setSelected: (state, { payload }: { payload: Date }) => {
+      state.selected = payload;
     },
   },
 });

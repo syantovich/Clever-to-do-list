@@ -1,4 +1,4 @@
-import { Button, TextField, Grid, Box } from '@mui/material';
+import { Box, Button, Grid, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import {
   AuthError,
@@ -16,6 +16,11 @@ import GoogleIcon from '@mui/icons-material/Google';
 import './SignIn.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import LoadingSpinner from '../../components/LoadingSpiner/LoadingSpiner';
+import {
+  IsLoadingEnum,
+  setLoading,
+} from '../../store/isLoading/isLoadingSlice';
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
@@ -24,6 +29,7 @@ const SignIn = () => {
 
   const dispatch = useDispatch();
   const authWithPass = () => {
+    dispatch(setLoading(IsLoadingEnum.pending));
     let auth = getAuth();
     const promise = signInWithEmailAndPassword(auth, email, password);
     toast
@@ -45,9 +51,13 @@ const SignIn = () => {
       })
       .catch((err: AuthError) => {
         toast.error(err.message);
+      })
+      .finally(() => {
+        dispatch(setLoading(IsLoadingEnum.success));
       });
   };
   const googleAuth = () => {
+    dispatch(setLoading(IsLoadingEnum.pending));
     const auth = getAuth();
     const google = new GoogleAuthProvider();
     if (
@@ -71,73 +81,86 @@ const SignIn = () => {
         })
         .catch((error: AuthError) => {
           toast.error(error.message);
+        })
+        .finally(() => {
+          dispatch(setLoading(IsLoadingEnum.success));
         });
     }
   };
   return (
-    <Box className={'sign'}>
-      <Box className={'center around'}>
-        <Grid
-          container
-          spacing={2}
-          direction={'column'}
-          justifyContent="center"
-          alignItems="center"
-          className={'signin'}>
-          <Grid item xs={12}>
-            <TextField
-              id="input_email"
-              label="Email"
-              variant="outlined"
-              className={'inputText'}
-              value={email}
-              onChange={value => {
-                setEmail(value.target.value);
-              }}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              id="input_password"
-              label="password"
-              variant="outlined"
-              type={'password'}
-              className={'inputText'}
-              value={password}
-              onChange={value => {
-                setPassword(value.target.value);
-              }}
-            />
-          </Grid>
-          <Grid item xs={5}>
-            <Grid container spacing={2}>
-              <Grid item>
-                <Button
-                  variant="contained"
-                  onClick={() => {
-                    authWithPass();
-                  }}>
-                  Sign In
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button
-                  variant="contained"
-                  onClick={() => {
-                    googleAuth();
-                  }}>
-                  {<GoogleIcon />}
-                </Button>
+    <LoadingSpinner>
+      <Box className={'sign'}>
+        <Box className={'center around'}>
+          <Grid
+            container
+            spacing={2}
+            direction={'column'}
+            justifyContent="center"
+            alignItems="center"
+            className={'signin'}>
+            <Grid item xs={12}>
+              <TextField
+                id="input_email"
+                label="Email"
+                variant="outlined"
+                className={'inputText'}
+                value={email}
+                onChange={(
+                  event: React.ChangeEvent<
+                    HTMLInputElement | HTMLTextAreaElement
+                  >,
+                ) => {
+                  setEmail(event.target.value);
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                id="input_password"
+                label="password"
+                variant="outlined"
+                type={'password'}
+                className={'inputText'}
+                value={password}
+                onChange={(
+                  event: React.ChangeEvent<
+                    HTMLInputElement | HTMLTextAreaElement
+                  >,
+                ) => {
+                  setPassword(event.target.value);
+                }}
+              />
+            </Grid>
+            <Grid item xs={5}>
+              <Grid container spacing={2}>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    onClick={() => {
+                      authWithPass();
+                    }}>
+                    Sign In
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    onClick={() => {
+                      googleAuth();
+                    }}>
+                    {<GoogleIcon />}
+                  </Button>
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
 
-          <Grid item xs={12}>
-            <Link to={'../signup'}>Sign Up</Link>
+            <Grid item xs={12}>
+              <Link to={'../signup'}>Sign Up</Link>
+            </Grid>
           </Grid>
-        </Grid>
+        </Box>
       </Box>
-    </Box>
+    </LoadingSpinner>
   );
 };
 export default SignIn;

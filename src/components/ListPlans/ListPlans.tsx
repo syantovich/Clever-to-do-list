@@ -39,6 +39,7 @@ const ListPlans = () => {
           label="Graphs"
           className={'switch_graphs'}
         />
+
         {sortedList.length ? (
           openedPlan ? (
             <OneCard

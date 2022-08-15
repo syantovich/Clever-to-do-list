@@ -1,12 +1,15 @@
 import React, { memo, useEffect, useState } from 'react';
-import { Stack, Grid } from '@mui/material';
+import { Grid, Stack } from '@mui/material';
 import { ICalendarDay } from './ICalendarDay';
 import './CalendarDay.css';
 import { importance, MonthArr } from '../../constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSelected, setWorkMode } from '../../store/workMode/workModeSlice';
 import { setGraphs } from '../../store/switchGraphs/switchGraphsSlice';
-import { setLoading } from '../../store/isLoading/isLoadingSlice';
+import {
+  IsLoadingEnum,
+  setLoading,
+} from '../../store/isLoading/isLoadingSlice';
 import { getPlans } from '../../store/plans/selector';
 import processingData from '../../helpers/ProcessingData';
 
@@ -57,11 +60,11 @@ const CalendarDay = memo(
             alignItems="center"
             className={`day_element ${isSelected ? 'selected' : ''}`}
             onClick={() => {
-              dispatch(setLoading(true));
+              dispatch(setLoading(IsLoadingEnum.pending));
               dispatch(setGraphs(false));
               dispatch(setSelected(selected));
               dispatch(setWorkMode(0));
-              dispatch(setLoading(false));
+              dispatch(setLoading(IsLoadingEnum.success));
             }}>
             <div className={'icons_important'}>
               <Grid

@@ -2,7 +2,7 @@ import { IinfoPlan } from '../../pages/Plans/IinfoPlan';
 export type OneCardType = {
   name: string;
   id: string;
-  desc: string;
+  desc?: string;
   important: string;
   addingDate: Date;
   timeStart: string;

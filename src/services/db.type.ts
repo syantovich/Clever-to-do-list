@@ -1,7 +1,7 @@
 export type PlanType = {
   email: string;
   name: string;
-  desc: string;
+  desc?: string;
   important: string;
   date: Date;
   timeStart: string;

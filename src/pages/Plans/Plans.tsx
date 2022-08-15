@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { getWorkMode } from '../../store/workMode/selector';
 import { isLoadingSelector } from '../../store/isLoading/selector';
 import WorkModeProxy from '../../components/workModeProxy/WorkModeProxy';
+import { IsLoadingEnum } from '../../store/isLoading/isLoadingSlice';
 
 const Plans = memo(() => {
   const workMod = useSelector(getWorkMode);
@@ -23,7 +24,7 @@ const Plans = memo(() => {
       <Grid item xs={7} className={'wrapper_plans_content'}>
         <WorkModeProxy workMode={workMod} />
       </Grid>
-      {!isLoading && (
+      {isLoading === IsLoadingEnum.success && (
         <Grid item xs={1}>
           <ButtonNav />
         </Grid>

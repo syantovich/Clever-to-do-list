@@ -1,4 +1,4 @@
-const processingData = {
+const processingDate = {
   toYearMont(date: Date) {
     return date.toISOString().slice(0, 7);
   },
@@ -12,4 +12,4 @@ const processingData = {
     return date.toISOString().slice(0, 10);
   },
 };
-export default processingData;
+export default processingDate;

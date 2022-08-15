@@ -142,7 +142,7 @@ const AddPlan = memo(
                         setOpenedPlan(null);
                       }
 
-                      dispatch(deletePlan({ date: oldDate, id: uuid }));
+                      dispatch(deletePlan({ date: oldDate!, id: uuid }));
                     });
                 }
                 toast

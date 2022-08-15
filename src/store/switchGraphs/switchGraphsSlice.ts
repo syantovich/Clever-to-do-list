@@ -8,8 +8,8 @@ export const switchGraphs = createSlice({
   name: 'graphs',
   initialState,
   reducers: {
-    setGraphs: (state, action) => {
-      state.isGraphs = action.payload;
+    setGraphs: (state, { payload }: { payload: boolean }) => {
+      state.isGraphs = payload;
     },
   },
 });

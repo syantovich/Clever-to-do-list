@@ -7,7 +7,8 @@ import switchGraph from './switchGraphs/switchGraphsSlice';
 
 const store = configureStore({
   reducer: { user, isLoading, plans, workMode, switchGraph },
-  middleware: getDefaultMiddleware => getDefaultMiddleware(),
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({ serializableCheck: false }),
   devTools: process.env.NODE !== 'production',
 });
 export default store;

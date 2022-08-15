@@ -1,12 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState: { is: boolean } = { is: true };
+export enum IsLoadingEnum {
+  pending = 'pending',
+  error = 'rejected',
+  success = 'fulfilled',
+}
+const initialState: { is: IsLoadingEnum } = { is: IsLoadingEnum.pending };
 export const Loading = createSlice({
   name: 'isLoading',
   initialState,
   reducers: {
-    setLoading: (state, action) => {
-      state.is = action.payload;
+    setLoading: (state, { payload }: { payload: IsLoadingEnum }) => {
+      state.is = payload;
     },
   },
 });

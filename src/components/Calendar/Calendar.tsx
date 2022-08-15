@@ -1,4 +1,4 @@
-import React, { useEffect, useState, memo } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { Stack } from '@mui/material';
 import { currDayInMonth, dayInWeek, daysInMonth } from '../../constants';
 import CalendarDay from '../CalendarDay/CalendarDay';
@@ -8,7 +8,10 @@ import './Calendar.css';
 import { db } from '../../services/db';
 import { useDispatch, useSelector } from 'react-redux';
 import { userSelector } from '../../store/user/selector';
-import { setLoading } from '../../store/isLoading/isLoadingSlice';
+import {
+  IsLoadingEnum,
+  setLoading,
+} from '../../store/isLoading/isLoadingSlice';
 import { setPlans } from '../../store/plans/plansSlice';
 import { getSelected } from '../../store/workMode/selector';
 import { IPlans } from '../../store/plans/IPlans';
@@ -77,7 +80,7 @@ const Calendar = memo(() => {
         setNextMonth(nextMonth + 1);
         setArrOfDays(arrOfDays.concat(nextMonthArr));
         setDays(days.concat(addingDays));
-        dispatch(setLoading(false));
+        dispatch(setLoading(IsLoadingEnum.success));
       });
   };
   useEffect(() => {
@@ -92,7 +95,7 @@ const Calendar = memo(() => {
   }, [selected]);
 
   useEffect(() => {
-    dispatch(setLoading(true));
+    dispatch(setLoading(IsLoadingEnum.pending));
     addDays();
   }, []);
   return (

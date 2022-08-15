@@ -1,7 +1,7 @@
 export type ElementOfListPlansType = {
   name: string;
   id: string;
-  desc: string;
+  desc?: string;
   important: string;
   addingDate: Date;
   timeStart: string;
