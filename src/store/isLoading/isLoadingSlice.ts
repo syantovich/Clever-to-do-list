@@ -1,16 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { TypeInitialState, TypeSetIsLoading } from './isLoading.type';
 
 export enum IsLoadingEnum {
   pending = 'pending',
   error = 'rejected',
   success = 'fulfilled',
 }
-const initialState: { is: IsLoadingEnum } = { is: IsLoadingEnum.pending };
+const initialState: TypeInitialState = { is: IsLoadingEnum.pending };
 export const Loading = createSlice({
   name: 'isLoading',
   initialState,
   reducers: {
-    setLoading: (state, { payload }: { payload: IsLoadingEnum }) => {
+    setLoading: (state, { payload }: TypeSetIsLoading) => {
       state.is = payload;
     },
   },

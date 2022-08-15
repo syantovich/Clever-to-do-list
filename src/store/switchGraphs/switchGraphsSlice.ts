@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { SwitchGraphType } from './switchGraph.type';
+import { SwitchGraphType, TypeSetGraph } from './switchGraph.type';
 
 const initialState: SwitchGraphType = {
   isGraphs: false,
@@ -8,7 +8,7 @@ export const switchGraphs = createSlice({
   name: 'graphs',
   initialState,
   reducers: {
-    setGraphs: (state, { payload }: { payload: boolean }) => {
+    setGraphs: (state, { payload }: TypeSetGraph) => {
       state.isGraphs = payload;
     },
   },

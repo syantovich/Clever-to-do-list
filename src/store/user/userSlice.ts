@@ -1,5 +1,6 @@
 import { IUser } from './IUser';
 import { createSlice } from '@reduxjs/toolkit';
+import { TypeLogin } from './user.type';
 
 const initialState: IUser = {
   name: undefined,
@@ -10,18 +11,7 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    login: (
-      state,
-      {
-        payload: { name, email, uid },
-      }: {
-        payload: {
-          name: string | null | undefined;
-          email: string | null | undefined;
-          uid: string | null | undefined;
-        };
-      },
-    ) => {
+    login: (state, { payload: { name, email, uid } }: TypeLogin) => {
       state.name = name;
       state.email = email;
       state.uid = uid;

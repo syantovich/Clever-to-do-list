@@ -1,7 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { IPlans } from './IPlans';
 import processingData from '../../helpers/ProcessingData';
-import { IinfoPlan } from '../../pages/Plans/IinfoPlan';
+import {
+  TypeAddPlan,
+  TypeChangeIsFinished,
+  TypeDeletePlan,
+  TypeSetPlans,
+} from './plans.type';
 
 const initialState: IPlans = {};
 
@@ -9,7 +14,7 @@ export const plansSlice = createSlice({
   name: 'plans',
   initialState,
   reducers: {
-    addPlan: (state, { payload }: { payload: IinfoPlan }) => {
+    addPlan: (state, { payload }: TypeAddPlan) => {
       let month = processingData.toYearMont(payload.date);
       let day = processingData.getDay(payload.date);
       if (!state[month]) {
@@ -20,24 +25,19 @@ export const plansSlice = createSlice({
       }
       state[month][day][payload.id] = payload;
     },
-    deletePlan: (
-      state,
-      { payload: { date, id } }: { payload: { date: Date; id: string } },
-    ) => {
+    deletePlan: (state, { payload: { date, id } }: TypeDeletePlan) => {
       let month = processingData.toYearMont(date);
       let day = processingData.getDay(date);
       delete state[month][day][id];
     },
-    setPlans: (state, { payload }: { payload: IPlans }) => {
+    setPlans: (state, { payload }: TypeSetPlans) => {
       for (let key in payload) {
         state[key] = payload[key];
       }
     },
     changePlansIsFinished: (
       state,
-      {
-        payload: { month, day, id, is },
-      }: { payload: { month: string; day: string; id: string; is: boolean } },
+      { payload: { month, day, id, is } }: TypeChangeIsFinished,
     ) => {
       state[month][day][id].isFinished = is;
     },

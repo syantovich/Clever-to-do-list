@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { IWorkMode } from './IWorkMode';
+import { TypeSetSelected, TypeSetWorkMode } from './workMode.type';
 
 const initialState: IWorkMode = {
   workMode: 0,
@@ -9,10 +10,10 @@ export const userSlice = createSlice({
   name: 'workMode',
   initialState,
   reducers: {
-    setWorkMode: (state, { payload }: { payload: number }) => {
+    setWorkMode: (state, { payload }: TypeSetWorkMode) => {
       state.workMode = payload;
     },
-    setSelected: (state, { payload }: { payload: Date }) => {
+    setSelected: (state, { payload }: TypeSetSelected) => {
       state.selected = payload;
     },
   },

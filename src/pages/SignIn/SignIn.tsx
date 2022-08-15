@@ -1,92 +1,16 @@
 import { Box, Button, Grid, TextField } from '@mui/material';
-import React, { useState } from 'react';
-import {
-  AuthError,
-  getAuth,
-  GoogleAuthProvider,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-  signInWithRedirect,
-} from 'firebase/auth';
-import { useDispatch } from 'react-redux';
-import { login } from '../../store/user/userSlice';
-import { db } from '../../services/db';
+import React from 'react';
 import GoogleIcon from '@mui/icons-material/Google';
-
 import './SignIn.css';
-import { Link, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 import LoadingSpinner from '../../components/LoadingSpiner/LoadingSpiner';
-import {
-  IsLoadingEnum,
-  setLoading,
-} from '../../store/isLoading/isLoadingSlice';
+import useAuthWithPass from '../../hooks/useAuthWithPass';
+import useGoogleAuth from '../../hooks/useGoogleAuth';
 
 const SignIn = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const navigate = useNavigate();
-
-  const dispatch = useDispatch();
-  const authWithPass = () => {
-    dispatch(setLoading(IsLoadingEnum.pending));
-    let auth = getAuth();
-    const promise = signInWithEmailAndPassword(auth, email, password);
-    toast
-      .promise(promise, {
-        pending: 'Loading',
-        success: 'OK',
-      })
-      .then(result => db.getUserInfo(result.user.uid))
-      .then(res => {
-        let result = res.data();
-
-        if (result) {
-          dispatch(
-            login({ name: result.name, email: result.email, uid: result.uid }),
-          );
-        }
-
-        navigate('../');
-      })
-      .catch((err: AuthError) => {
-        toast.error(err.message);
-      })
-      .finally(() => {
-        dispatch(setLoading(IsLoadingEnum.success));
-      });
-  };
-  const googleAuth = () => {
-    dispatch(setLoading(IsLoadingEnum.pending));
-    const auth = getAuth();
-    const google = new GoogleAuthProvider();
-    if (
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(
-        navigator.userAgent,
-      )
-    ) {
-      signInWithRedirect(auth, google);
-    } else {
-      signInWithPopup(auth, google)
-        .then(result => {
-          dispatch(
-            login({
-              email: result.user.email,
-              name: result.user.displayName,
-              uid: result.user.uid,
-            }),
-          );
-          navigate('../');
-          toast.success('Entered');
-        })
-        .catch((error: AuthError) => {
-          toast.error(error.message);
-        })
-        .finally(() => {
-          dispatch(setLoading(IsLoadingEnum.success));
-        });
-    }
-  };
+  const { getEmail, getPassword, authWithPass, email, password } =
+    useAuthWithPass();
+  const { googleAuth } = useGoogleAuth();
   return (
     <LoadingSpinner>
       <Box className={'sign'}>
@@ -105,13 +29,7 @@ const SignIn = () => {
                 variant="outlined"
                 className={'inputText'}
                 value={email}
-                onChange={(
-                  event: React.ChangeEvent<
-                    HTMLInputElement | HTMLTextAreaElement
-                  >,
-                ) => {
-                  setEmail(event.target.value);
-                }}
+                onChange={getEmail}
               />
             </Grid>
             <Grid item xs={12}>
@@ -122,32 +40,18 @@ const SignIn = () => {
                 type={'password'}
                 className={'inputText'}
                 value={password}
-                onChange={(
-                  event: React.ChangeEvent<
-                    HTMLInputElement | HTMLTextAreaElement
-                  >,
-                ) => {
-                  setPassword(event.target.value);
-                }}
+                onChange={getPassword}
               />
             </Grid>
             <Grid item xs={5}>
               <Grid container spacing={2}>
                 <Grid item>
-                  <Button
-                    variant="contained"
-                    onClick={() => {
-                      authWithPass();
-                    }}>
+                  <Button variant="contained" onClick={authWithPass}>
                     Sign In
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button
-                    variant="contained"
-                    onClick={() => {
-                      googleAuth();
-                    }}>
+                  <Button variant="contained" onClick={googleAuth}>
                     {<GoogleIcon />}
                   </Button>
                 </Grid>
