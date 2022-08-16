@@ -1,17 +1,25 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import './Plans.css';
 import Calendar from '../../components/Calendar/Calendar';
 import { Grid } from '@mui/material';
 import ButtonNav from '../../components/ButtonNav/ButtonNav';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getWorkMode } from '../../store/workMode/selector';
 import { isLoadingSelector } from '../../store/isLoading/selector';
 import WorkModeProxy from '../../components/workModeProxy/WorkModeProxy';
-import { IsLoadingEnum } from '../../store/isLoading/isLoadingSlice';
+import {
+  IsLoadingEnum,
+  setLoading,
+} from '../../store/isLoading/isLoadingSlice';
 
 const Plans = memo(() => {
   const workMod = useSelector(getWorkMode);
   const isLoading = useSelector(isLoadingSelector);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setLoading(IsLoadingEnum.pending));
+  }, []);
+
   return (
     <Grid
       container
