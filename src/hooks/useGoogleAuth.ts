@@ -10,10 +10,14 @@ import { login } from '../store/user/userSlice';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const useGoogleAuth = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  useEffect(() => {
+    dispatch(setLoading(IsLoadingEnum.success));
+  }, []);
   const googleAuth = () => {
     dispatch(setLoading(IsLoadingEnum.pending));
     const auth = getAuth();
