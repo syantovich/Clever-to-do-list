@@ -1,48 +1,22 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo } from 'react';
 import { Grid, Stack } from '@mui/material';
 import { ICalendarDay } from './ICalendarDay';
 import './CalendarDay.css';
 import { importance, MonthArr } from '../../constants';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setSelected, setWorkMode } from '../../store/workMode/workModeSlice';
 import { setGraphs } from '../../store/switchGraphs/switchGraphsSlice';
 import {
   IsLoadingEnum,
   setLoading,
 } from '../../store/isLoading/isLoadingSlice';
-import { getPlans } from '../../store/plans/selector';
-import processingData from '../../helpers/ProcessingData';
+import useIsImportant from '../../hooks/useIsImportant';
 
 const CalendarDay = memo(
   ({ dayOfWeek, dayOfMonth, month, isSelected, selected }: ICalendarDay) => {
     const dispatch = useDispatch();
-    const plans = useSelector(getPlans);
-    const [isNotImportant, setIsNotImportant] = useState(false);
-    const [isImportant, setIsImportant] = useState(false);
-    const [isVeryImportant, setIsVeryImportant] = useState(false);
-    useEffect(() => {
-      const yearMonth = processingData.toYearMont(selected);
-      const day = processingData.getDay(selected);
-      if (plans[yearMonth]) {
-        if (plans[yearMonth][day]) {
-          setIsNotImportant(
-            Object.values(plans[yearMonth][day]).some(
-              e => e.important === importance[0].value,
-            ),
-          );
-          setIsImportant(
-            Object.values(plans[yearMonth][day]).some(
-              e => e.important === importance[1].value,
-            ),
-          );
-          setIsVeryImportant(
-            Object.values(plans[yearMonth][day]).some(
-              e => e.important === importance[2].value,
-            ),
-          );
-        }
-      }
-    }, [plans]);
+    const { isNotImportant, isImportant, isVeryImportant } =
+      useIsImportant(selected);
     return (
       <>
         <Stack

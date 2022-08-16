@@ -1,16 +1,11 @@
 import React, { useState } from 'react';
 import { Checkbox, Typography, Box, CardContent, Card } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { toast } from 'react-toastify';
-import { useDispatch, useSelector } from 'react-redux';
-import { userSelector } from '../../store/user/selector';
 import { OneCardType } from './OneCard.type';
-import { db } from '../../services/db';
 import './OneCard.css';
-import { changePlansIsFinished } from '../../store/plans/plansSlice';
 import AddPlan from '../AddPlan/AddPlan';
 import EditIcon from '@mui/icons-material/Edit';
-import processingData from '../../helpers/ProcessingData';
+import useChangeIsFinished from '../../hooks/useChangeIsFinished';
 
 const OneCard = ({
   id,
@@ -25,37 +20,16 @@ const OneCard = ({
   date,
 }: OneCardType) => {
   const [isEdit, setIsEdit] = useState(false);
-  const { email } = useSelector(userSelector);
-  const [isEnd, setIsEnd] = useState(isFinished);
-  const dispatch = useDispatch();
-  const setFinished = (is: boolean) => {
-    toast
-      .promise(
-        db.updatePlans({
-          email: email!,
-          name,
-          desc,
-          important,
-          date: addingDate,
-          timeStart,
-          timeEnd,
-          id,
-          isFinished: is,
-        }),
-        { pending: 'Changing', error: 'Error of Change', success: 'Changed' },
-      )
-      .then(() => {
-        dispatch(
-          changePlansIsFinished({
-            month: processingData.toYearMont(addingDate),
-            day: processingData.getDay(addingDate),
-            id,
-            is,
-          }),
-        );
-        setIsEnd(is);
-      });
-  };
+  const { isEnd, setFinished } = useChangeIsFinished({
+    id,
+    name,
+    desc,
+    important,
+    addingDate,
+    timeStart,
+    timeEnd,
+    isFinished,
+  });
   return (
     <Box className={'wrapper_card'}>
       <Card className={'content'}>

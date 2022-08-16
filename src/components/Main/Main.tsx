@@ -10,7 +10,6 @@ import Plans from '../../pages/Plans/Plans';
 
 const Main = () => {
   const { email } = useSelector(userSelector);
-  console.log(email);
   return (
     <main>
       <Routes>

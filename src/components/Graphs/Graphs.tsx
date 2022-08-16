@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { GraphsType } from './Graphs.type';
 import './Graphs.css';
+import processingData from '../../helpers/ProcessingData';
 
 const Graphs = ({ sortedList, setOpenedPlan }: GraphsType) => {
   const size = 1200 / 24;
@@ -101,7 +102,8 @@ const Graphs = ({ sortedList, setOpenedPlan }: GraphsType) => {
           />
         </g>
       </svg>{' '}
-      {sortedList.length && sortedList[0].date === new Date(currentDate) && (
+      {processingData.getDateWithoutHour(sortedList[0].date) ===
+        currentDate && (
         <div
           className={'current_line'}
           style={{
