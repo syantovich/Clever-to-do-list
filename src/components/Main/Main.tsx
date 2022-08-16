@@ -9,20 +9,21 @@ import UserProfile from '../../pages/UserProfile/UserProfile';
 import Plans from '../../pages/Plans/Plans';
 
 const Main = () => {
-  const { name } = useSelector(userSelector);
+  const { email } = useSelector(userSelector);
+  console.log(email);
   return (
     <main>
       <Routes>
         <Route>
-          {name ? (
-            <>
-              <Route path="signin" element={<SignIn />} />
-              <Route path="signup" element={<SignUp />} />
-            </>
-          ) : (
+          {email ? (
             <>
               <Route path="plans" element={<Plans />} />
               <Route path="/profile" element={<UserProfile />} />
+            </>
+          ) : (
+            <>
+              <Route path="signin" element={<SignIn />} />
+              <Route path="signup" element={<SignUp />} />
             </>
           )}
 
