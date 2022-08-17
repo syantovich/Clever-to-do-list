@@ -2,12 +2,11 @@ import React from 'react';
 import './Welcome.css';
 import { Grid, Button } from '@mui/material';
 import planImg from '../../img/plans.jpg';
-import { useSelector } from 'react-redux';
-import { userSelector } from '../../store/user/selector';
 import { useNavigate } from 'react-router-dom';
+import user from '../../store/user/user';
+import { observer } from 'mobx-react-lite';
 
-const Welcome = () => {
-  const { name } = useSelector(userSelector);
+const Welcome = observer(() => {
   const navigator = useNavigate();
   return (
     <div className={'wrapper_welcome'}>
@@ -28,7 +27,7 @@ const Welcome = () => {
             variant="outlined"
             className={'explore'}
             onClick={() => {
-              if (name) {
+              if (user.name) {
                 navigator('plans');
               } else {
                 navigator('signin');
@@ -40,5 +39,5 @@ const Welcome = () => {
       </Grid>
     </div>
   );
-};
+});
 export default Welcome;

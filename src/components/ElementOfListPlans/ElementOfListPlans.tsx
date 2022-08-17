@@ -4,78 +4,69 @@ import { ElementOfListPlansType } from './ElementOfListPlans.type';
 import './ElementOfPlans.css';
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { toast } from 'react-toastify';
-import { db } from '../../services/db';
-import { useDispatch, useSelector } from 'react-redux';
-import { userSelector } from '../../store/user/selector';
-import { deletePlan } from '../../store/plans/plansSlice';
+import plans from '../../store/plans/plans';
+import { observer } from 'mobx-react-lite';
+import processingDate from '../../helpers/ProcessingData';
 
-const ElementOfListPlans = ({
-  id,
-  name,
-  desc,
-  important,
-  addingDate,
-  timeStart,
-  timeEnd,
-  setOpenedPlan,
-  isFinished,
-  date,
-}: ElementOfListPlansType) => {
-  const disabled = isFinished || `${addingDate}T${timeEnd}` < date;
-  const { email } = useSelector(userSelector);
-  const dispatch = useDispatch();
-  return (
-    <Box
-      className={`${important} element_of_plan ${
-        disabled ? 'opacity_element' : ''
-      }`}
-      onClick={() => {
-        setOpenedPlan({
-          id,
-          name,
-          desc,
-          important,
-          date: addingDate,
-          timeStart,
-          timeEnd,
-          isFinished,
-        });
-      }}>
-      <Grid
-        container
-        spacing={2}
-        justifyContent="space-between"
-        alignItems="center">
-        <Grid item xs={10}>
-          <Typography>
-            {name} from {timeStart}
-          </Typography>
-        </Grid>
+const ElementOfListPlans = observer(
+  ({
+    id,
+    name,
+    desc,
+    important,
+    addingDate,
+    timeStart,
+    timeEnd,
+    setOpenedPlan,
+    isFinished,
+    date,
+  }: ElementOfListPlansType) => {
+    const disabled =
+      isFinished ||
+      `${processingDate.getDateWithoutHour(addingDate)}T${timeEnd}` < date;
+    return (
+      <Box
+        className={`${important} element_of_plan ${
+          disabled ? 'opacity_element' : ''
+        }`}
+        onClick={() => {
+          setOpenedPlan({
+            id,
+            name,
+            desc,
+            important,
+            date: addingDate,
+            timeStart,
+            timeEnd,
+            isFinished,
+          });
+        }}>
         <Grid
-          item
-          xs={1}
-          className={'icon_del'}
-          onClick={e => {
-            e.stopPropagation();
-            toast
-              .promise(db.deletePlan(email!, addingDate, id), {
-                pending: 'deleting',
-                error: 'error',
-                success: 'ok',
-              })
-              .then(() => {
-                dispatch(deletePlan({ date: addingDate, id }));
-              })
-              .catch(ev => console.log(ev));
-          }}>
-          <DeleteIcon />
+          container
+          spacing={2}
+          justifyContent="space-between"
+          alignItems="center">
+          <Grid item xs={10}>
+            <Typography>
+              {name} from {timeStart}
+            </Typography>
+          </Grid>
+          <Grid
+            item
+            xs={1}
+            className={'icon_del'}
+            onClick={e => {
+              e.stopPropagation();
+              plans.deletePlan(addingDate, id).catch(ev => console.log(ev));
+            }}>
+            <DeleteIcon />
+          </Grid>
+          <Grid item xs={1} className={'icon_full'}>
+            <OpenInFullIcon />
+          </Grid>
         </Grid>
-        <Grid item xs={1} className={'icon_full'}>
-          <OpenInFullIcon />
-        </Grid>
-      </Grid>
-    </Box>
-  );
-};
+      </Box>
+    );
+  },
+);
 export default ElementOfListPlans;

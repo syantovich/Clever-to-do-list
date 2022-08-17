@@ -1,23 +1,18 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
-import { db } from '../services/db';
-import { addPlan, deletePlan } from '../store/plans/plansSlice';
 import { uid } from 'uid';
-import { useDispatch, useSelector } from 'react-redux';
-import { userSelector } from '../store/user/selector';
-import { getSelected } from '../store/workMode/selector';
 import { importance } from '../constants';
 import { AddPlanType } from '../components/AddPlan/AddPlan.type';
 import processingData from '../helpers/ProcessingData';
+import plans from '../store/plans/plans';
+import workModeSelected from '../store/workMode/workModeSelected';
 
 const useAddPlan = ({ defaultObj, setIsEdit, setOpenedPlan }: AddPlanType) => {
-  const { email } = useSelector(userSelector);
-  const dispatch = useDispatch();
   const [oldDate, setOldDate] = useState(defaultObj?.date);
   const [uuid, setUuid] = useState(defaultObj?.id || uid(32));
   const [name, setName] = useState(defaultObj?.name || '');
   const [desc, setDesc] = useState(defaultObj?.desc || '');
-  const selectedDate = defaultObj?.date || useSelector(getSelected);
+  const selectedDate = defaultObj?.date || workModeSelected.selected;
   const [important, setImportant] = useState(
     defaultObj?.important || importance[0].value,
   );
@@ -61,73 +56,31 @@ const useAddPlan = ({ defaultObj, setIsEdit, setOpenedPlan }: AddPlanType) => {
   const addPlanFetch = () => {
     if (timeStart <= timeEnd && name.length) {
       if (defaultObj?.date !== addingDate && !!defaultObj?.date) {
-        toast
-          .promise(db.deletePlan(email!, oldDate!, uuid), {
-            error: 'Save error',
-            success: 'deleted',
-            pending: 'deleting',
-          })
-          .then(() => {
-            setOldDate(addingDate);
-            if (setIsEdit) {
-              setIsEdit(false);
-            }
-            if (setOpenedPlan) {
-              setOpenedPlan(null);
-            }
-
-            dispatch(deletePlan({ date: oldDate!, id: uuid }));
-          });
+        plans.deletePlan(oldDate!, uuid).then(() => {
+          setOldDate(addingDate);
+          if (setIsEdit) {
+            setIsEdit(false);
+          }
+          if (setOpenedPlan) {
+            setOpenedPlan(null);
+          }
+        });
       }
-      toast
-        .promise(
-          db
-            .updatePlans({
-              email: email!,
-              name,
-              desc,
-              important,
-              date: addingDate,
-              timeStart,
-              timeEnd,
-              id: uuid,
-              isFinished: false,
-            })
-            .catch(() => {
-              return db.addPlans({
-                email: email!,
-                name,
-                desc,
-                important,
-                date: addingDate,
-                timeStart,
-                timeEnd,
-                id: uuid,
-                isFinished: false,
-              });
-            }),
-          {
-            success: 'Plan added',
-            error: 'Something wrong',
-            pending: 'Loading',
-          },
-        )
+      plans
+        .addPlan({
+          name,
+          desc,
+          important,
+          date: addingDate,
+          timeStart,
+          timeEnd,
+          id: uuid,
+          isFinished: false,
+        })
         .then(() => {
           if (!defaultObj?.id) {
             setUuid(uid(32));
           }
-          dispatch(
-            addPlan({
-              name,
-              desc,
-              important,
-              date: addingDate,
-              timeStart,
-              timeEnd,
-              id: uuid,
-              isFinished: false,
-            }),
-          );
         });
     } else {
       if (timeStart > timeEnd) {

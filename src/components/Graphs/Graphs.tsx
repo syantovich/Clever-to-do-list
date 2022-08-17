@@ -57,7 +57,8 @@ const Graphs = ({ sortedList, setOpenedPlan }: GraphsType) => {
           }}
           className={`block_graphs ${e.important} ${
             e.isFinished ||
-            `${e.date}T${e.timeEnd}` < currentDate + 'T' + currentTime
+            `${processingData.getDateWithoutHour(e.date)}T${e.timeEnd}` <
+              currentDate + 'T' + currentTime
               ? 'opacity_element'
               : ''
           }`}

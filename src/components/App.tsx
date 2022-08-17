@@ -4,10 +4,11 @@ import './App.css';
 import Header from './Header/Header';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import useCheckingAuth from '../hooks/useCheckingAuth';
+import { observer } from 'mobx-react-lite';
+import user from '../store/user/user';
 
-function App() {
-  useCheckingAuth();
+const App = observer(() => {
+  user.checkingUser();
   return (
     <div className="App">
       <Header />
@@ -25,6 +26,6 @@ function App() {
       />
     </div>
   );
-}
+});
 
 export default App;

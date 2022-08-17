@@ -1,6 +1,4 @@
 import React from 'react';
-import { userSelector } from '../../store/user/selector';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   Card,
   CardActions,
@@ -9,13 +7,11 @@ import {
   Button,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { logout } from '../../store/user/userSlice';
 import './UserProfile.css';
-import { getAuth, signOut } from 'firebase/auth';
+import user from '../../store/user/user';
+import { observer } from 'mobx-react-lite';
 
-const UserProfile = () => {
-  const { name, email, uid } = useSelector(userSelector);
-  const dispatch = useDispatch();
+const UserProfile = observer(() => {
   const navigate = useNavigate();
   return (
     <section className={'user_profile'}>
@@ -25,28 +21,26 @@ const UserProfile = () => {
             Name
           </Typography>
           <Typography variant="h5" component="div">
-            {name}
+            {user.name}
           </Typography>
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
             Email
           </Typography>
           <Typography variant="h5" component="div">
-            {email}
+            {user.email}
           </Typography>
           <Typography sx={{ fontSize: 8 }} color="text.secondary" gutterBottom>
             UID
           </Typography>
           <Typography variant="h5" sx={{ fontSize: 8 }} component="div">
-            {uid}
+            {user.uid}
           </Typography>
         </CardContent>
         <CardActions>
           <Button
             size="small"
             onClick={() => {
-              let auth = getAuth();
-              signOut(auth).then(() => {
-                dispatch(logout());
+              user.signOut().then(() => {
                 navigate('../');
               });
             }}>
@@ -56,5 +50,5 @@ const UserProfile = () => {
       </Card>
     </section>
   );
-};
+});
 export default UserProfile;

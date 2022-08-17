@@ -6,8 +6,9 @@ import GoogleIcon from '@mui/icons-material/Google';
 import LoadingSpinner from '../../components/LoadingSpiner/LoadingSpiner';
 import useGoogleAuth from '../../hooks/useGoogleAuth';
 import useCreateUser from '../../hooks/useCreateUser';
+import { observer } from 'mobx-react-lite';
 
-const SignUp = () => {
+const SignUp = observer(() => {
   const { googleAuth } = useGoogleAuth();
   const {
     errorConfirmPass,
@@ -104,5 +105,5 @@ const SignUp = () => {
       </Box>
     </LoadingSpinner>
   );
-};
+});
 export default SignUp;

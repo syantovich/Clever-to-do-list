@@ -5,19 +5,17 @@ import { IinfoPlan } from '../../pages/Plans/IinfoPlan';
 import { Box, Grid, FormControlLabel, Switch } from '@mui/material';
 import './ListPlans.css';
 import LoadingSpinner from '../LoadingSpiner/LoadingSpiner';
-import { useDispatch, useSelector } from 'react-redux';
 import OneCard from '../OneCard/OneCard';
 import Graphs from '../Graphs/Graphs';
-import { isGraphs } from '../../store/switchGraphs/selector';
-import { setGraphs } from '../../store/switchGraphs/switchGraphsSlice';
-import { usePlansToSortedArr } from '../../hooks/usePlansToSortedArr';
+// import { usePlansToSortedArr } from '../../hooks/usePlansToSortedArr';
+import switchGraphs from '../../store/switchGraphs/switchGraphs';
+import { observer } from 'mobx-react-lite';
+import plans from '../../store/plans/plans';
 
-const ListPlans = () => {
+const ListPlans = observer(() => {
   const [openedPlan, setOpenedPlan] = useState<IinfoPlan | null>(null);
-  const sortedList = usePlansToSortedArr();
-  const switchGraphs = useSelector(isGraphs);
+  const sortedList = plans.sortedArrInDate;
   const memSetOpenedPlan = useCallback(setOpenedPlan, [openedPlan]);
-  const dispatch = useDispatch();
   const currTime =
     new Date().toISOString().slice(0, 10) +
     'T' +
@@ -29,10 +27,10 @@ const ListPlans = () => {
         <FormControlLabel
           control={
             <Switch
-              checked={switchGraphs}
+              checked={switchGraphs.isGraphs}
               disabled={!sortedList.length}
               onChange={(e, v) => {
-                dispatch(setGraphs(v));
+                switchGraphs.setGraphs(v);
               }}
             />
           }
@@ -48,11 +46,12 @@ const ListPlans = () => {
               addingDate={openedPlan.date}
               date={currTime}
             />
-          ) : switchGraphs ? (
+          ) : switchGraphs.isGraphs ? (
             <Graphs sortedList={sortedList} setOpenedPlan={memSetOpenedPlan} />
           ) : (
             <Grid container spacing={2}>
               {sortedList.map(e => {
+                console.log(typeof e.date);
                 return (
                   <Grid item xs={12} key={e.id}>
                     <ElementOfListPlans
@@ -72,5 +71,5 @@ const ListPlans = () => {
       </Box>
     </LoadingSpinner>
   );
-};
+});
 export default ListPlans;

@@ -12,9 +12,10 @@ import { importance } from '../../constants';
 import { AddPlanType } from './AddPlan.type';
 import './AddPlan.css';
 import useAddPlan from '../../hooks/useAddPlan';
+import { observer } from 'mobx-react-lite';
 
 const AddPlan = memo(
-  ({ defaultObj, setIsEdit, setOpenedPlan }: AddPlanType) => {
+  observer(({ defaultObj, setIsEdit, setOpenedPlan }: AddPlanType) => {
     const {
       name,
       getName,
@@ -121,7 +122,7 @@ const AddPlan = memo(
         </CardActions>
       </Card>
     );
-  },
+  }),
 );
 AddPlan.displayName = 'AddPlan';
 export default AddPlan;

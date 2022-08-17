@@ -1,20 +1,19 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import SignIn from '../../pages/SignIn/SignIn';
 import SignUp from '../../pages/SignUp/SignUp';
 import Welcome from '../../pages/Welcome/Welcome';
-import { userSelector } from '../../store/user/selector';
 import UserProfile from '../../pages/UserProfile/UserProfile';
 import Plans from '../../pages/Plans/Plans';
+import user from '../../store/user/user';
+import { observer } from 'mobx-react-lite';
 
-const Main = () => {
-  const { email } = useSelector(userSelector);
+const Main = observer(() => {
   return (
     <main>
       <Routes>
         <Route>
-          {email ? (
+          {user.email ? (
             <>
               <Route path="plans" element={<Plans />} />
               <Route path="/profile" element={<UserProfile />} />
@@ -32,5 +31,5 @@ const Main = () => {
       </Routes>
     </main>
   );
-};
+});
 export default Main;

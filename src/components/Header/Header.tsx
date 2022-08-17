@@ -1,14 +1,13 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { userSelector } from '../../store/user/selector';
 import { Grid } from '@mui/material';
 import './Header.css';
 import Logo from '../Logo/Logo';
 import ButtonLink from '../ButtonLink/ButtonLink';
 import ButtonSign from '../ButtonsSing/ButtonSign';
+import user from '../../store/user/user';
+import { observer } from 'mobx-react-lite';
 
-const Header = () => {
-  const { name } = useSelector(userSelector);
+const Header = observer(() => {
   return (
     <header>
       <Grid
@@ -22,10 +21,10 @@ const Header = () => {
           <Logo />
         </Grid>
         <Grid item>
-          <ButtonLink to={name ? 'plans' : 'signin'}>Plans</ButtonLink>
+          <ButtonLink to={user.name ? 'plans' : 'signin'}>Plans</ButtonLink>
         </Grid>
         <Grid item>
-          {name ? (
+          {user.name ? (
             <ButtonLink to={'profile'}>Profile</ButtonLink>
           ) : (
             <ButtonSign />
@@ -34,6 +33,6 @@ const Header = () => {
       </Grid>
     </header>
   );
-};
+});
 
 export default Header;

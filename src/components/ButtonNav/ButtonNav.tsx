@@ -1,25 +1,21 @@
 import React from 'react';
 import { BottomNavigationAction, BottomNavigation } from '@mui/material';
 import { Add, CalendarMonth } from '@mui/icons-material';
-import { useDispatch, useSelector } from 'react-redux';
-import { getWorkMode } from '../../store/workMode/selector';
-import { setWorkMode } from '../../store/workMode/workModeSlice';
 import './ButtonNav.css';
+import workModeSelected from '../../store/workMode/workModeSelected';
+import { observer } from 'mobx-react-lite';
 
-const ButtonNav = () => {
-  const workMod = useSelector(getWorkMode);
-  const dispatch = useDispatch();
-
+const ButtonNav = observer(() => {
   return (
     <BottomNavigation
       showLabels
-      value={workMod}
+      value={workModeSelected.workMode}
       onChange={(event, newValue) => {
-        dispatch(setWorkMode(newValue));
+        workModeSelected.setWorkMode(newValue);
       }}>
       <BottomNavigationAction label="Calendar" icon={<CalendarMonth />} />
       <BottomNavigationAction label="Add" icon={<Add />} />
     </BottomNavigation>
   );
-};
+});
 export default ButtonNav;

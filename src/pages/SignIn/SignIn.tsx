@@ -6,8 +6,9 @@ import { Link } from 'react-router-dom';
 import LoadingSpinner from '../../components/LoadingSpiner/LoadingSpiner';
 import useAuthWithPass from '../../hooks/useAuthWithPass';
 import useGoogleAuth from '../../hooks/useGoogleAuth';
+import { observer } from 'mobx-react-lite';
 
-const SignIn = () => {
+const SignIn = observer(() => {
   const { getEmail, getPassword, authWithPass, email, password } =
     useAuthWithPass();
   const { googleAuth } = useGoogleAuth();
@@ -57,7 +58,6 @@ const SignIn = () => {
                 </Grid>
               </Grid>
             </Grid>
-
             <Grid item xs={12}>
               <Link to={'../signup'}>Sign Up</Link>
             </Grid>
@@ -66,5 +66,5 @@ const SignIn = () => {
       </Box>
     </LoadingSpinner>
   );
-};
+});
 export default SignIn;
