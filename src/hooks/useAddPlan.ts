@@ -5,14 +5,13 @@ import { importance } from '../constants';
 import { AddPlanType } from '../components/AddPlan/AddPlan.type';
 import processingData from '../helpers/ProcessingData';
 import plans from '../store/plans/plans';
-import workModeSelected from '../store/workMode/workModeSelected';
 
 const useAddPlan = ({ defaultObj, setIsEdit, setOpenedPlan }: AddPlanType) => {
   const [oldDate, setOldDate] = useState(defaultObj?.date);
   const [uuid, setUuid] = useState(defaultObj?.id || uid(32));
   const [name, setName] = useState(defaultObj?.name || '');
   const [desc, setDesc] = useState(defaultObj?.desc || '');
-  const selectedDate = defaultObj?.date || workModeSelected.selected;
+  const selectedDate = defaultObj?.date || plans.selected;
   const [important, setImportant] = useState(
     defaultObj?.important || importance[0].value,
   );

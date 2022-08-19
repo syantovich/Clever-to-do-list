@@ -1,19 +1,36 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { Grid, Stack } from '@mui/material';
 import { ICalendarDay } from './ICalendarDay';
 import './CalendarDay.css';
 import { importance, MonthArr } from '../../constants';
 import isLoading, { IsLoadingEnum } from '../../store/isLoading/isLoading';
-import switchGraphs from '../../store/switchGraphs/switchGraphs';
-import workModeSelected from '../../store/workMode/workModeSelected';
-import { observer } from 'mobx-react-lite';
+import { IsImportantOnDate } from '../../helpers/isImportantOnDate';
 import plans from '../../store/plans/plans';
+import { observer } from 'mobx-react-lite';
 
 const CalendarDay = memo(
   observer(
-    ({ dayOfWeek, dayOfMonth, month, isSelected, selected }: ICalendarDay) => {
-      const { isNotImportant, isImportant, isVeryImportant } =
-        plans.importance(selected);
+    ({
+      dayOfWeek,
+      dayOfMonth,
+      month,
+      isSelected,
+      selected,
+      setIsGraph,
+      setWorkMode,
+    }: ICalendarDay) => {
+      const [isNotI, setIsNotI] = useState(false);
+      const [isI, setIsI] = useState(false);
+      const [isVeryI, setIsVeryI] = useState(false);
+      useEffect(() => {
+        const { isNotImportant, isImportant, isVeryImportant } =
+          IsImportantOnDate(selected);
+        console.log({ isNotImportant, isImportant, isVeryImportant });
+        setIsNotI(isNotImportant);
+        setIsI(isImportant);
+        setIsVeryI(isVeryImportant);
+      }, [plans.plans, selected]);
+
       return (
         <>
           <Stack
@@ -32,9 +49,9 @@ const CalendarDay = memo(
               className={`day_element ${isSelected ? 'selected' : ''}`}
               onClick={() => {
                 isLoading.setLoading(IsLoadingEnum.pending);
-                switchGraphs.setGraphs(false);
-                workModeSelected.setSelected(selected);
-                workModeSelected.setWorkMode(0);
+                setIsGraph(false);
+                plans.setSelected(selected);
+                setWorkMode(0);
                 isLoading.setLoading(IsLoadingEnum.success);
               }}>
               <div className={'icons_important'}>
@@ -45,21 +62,21 @@ const CalendarDay = memo(
                   <Grid item>
                     <div
                       className={`${
-                        isNotImportant ? importance[0].value : ''
+                        isNotI ? importance[0].value : ''
                       } circle_important`}
                     />
                   </Grid>
                   <Grid item>
                     <div
                       className={`${
-                        isImportant ? importance[1].value : ''
+                        isI ? importance[1].value : ''
                       } circle_important`}
                     />
                   </Grid>
                   <Grid item>
                     <div
                       className={`${
-                        isVeryImportant ? importance[2].value : ''
+                        isVeryI ? importance[2].value : ''
                       } circle_important`}
                     />
                   </Grid>

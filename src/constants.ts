@@ -32,3 +32,19 @@ export function dayInWeek(
   let date = new Date(year, month, dayMonth);
   return DayOfWeek[date.getDay()];
 }
+export const addPlanPromise = {
+  success: 'Plan added',
+  error: 'Something wrong',
+  pending: 'Loading',
+};
+export const deletePlanPromise = {
+  error: 'Save error',
+  success: 'deleted',
+  pending: 'deleting',
+};
+export const changingPromise = {
+  pending: 'Changing',
+  error: 'Error of Change',
+  success: 'Changed',
+};
+export const textButtonEdit = ['Save', 'Add'];

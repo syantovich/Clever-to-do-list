@@ -2,17 +2,24 @@ import { IPlans } from './IPlans';
 import { makeAutoObservable } from 'mobx';
 import processingData from '../../helpers/ProcessingData';
 import { IinfoPlan } from '../../pages/Plans/IinfoPlan';
-import { currDayInMonth, daysInMonth, importance } from '../../constants';
+import {
+  addPlanPromise,
+  changingPromise,
+  currDayInMonth,
+  daysInMonth,
+  deletePlanPromise,
+} from '../../constants';
 import { db } from '../../services/db';
 import user from '../user/user';
 import isLoading, { IsLoadingEnum } from '../isLoading/isLoading';
 import { toast } from 'react-toastify';
-import workModeSelected from '../workMode/workModeSelected';
 
 class Plans {
   plans: IPlans = {};
 
-  nextMonth = new Date().getMonth();
+  nextMonth: number = new Date().getMonth();
+
+  selected: Date = new Date();
 
   days: { [dateToISOString: string]: Date } = {};
 
@@ -20,17 +27,13 @@ class Plans {
     makeAutoObservable(this);
   }
 
-  addPlan(payload: IinfoPlan) {
+  addPlan(payload: IinfoPlan): Promise<void> {
     return toast
       .promise(
         db.updatePlans({ ...payload, email: user.email! }).catch(() => {
           return db.addPlans({ ...payload, email: user.email! });
         }),
-        {
-          success: 'Plan added',
-          error: 'Something wrong',
-          pending: 'Loading',
-        },
+        addPlanPromise,
       )
       .then(() => {
         let month = processingData.toYearMont(payload.date);
@@ -45,21 +48,10 @@ class Plans {
       });
   }
 
-  deletePlan(date: Date, id: string) {
+  deletePlan(date: Date, id: string): Promise<void> {
     return toast
-      .promise(db.deletePlan(user.email!, date!, id), {
-        error: 'Save error',
-        success: 'deleted',
-        pending: 'deleting',
-      })
+      .promise(db.deletePlan(user.email!, date!, id), deletePlanPromise)
       .then(() => {
-        // setOldDate(addingDate);
-        // if (setIsEdit) {
-        //   setIsEdit(false);
-        // }
-        // if (setOpenedPlan) {
-        //   setOpenedPlan(null);
-        // }
         let month = processingData.toYearMont(date);
         let day = processingData.getDay(date);
         delete this.plans[month][day][id];
@@ -67,7 +59,7 @@ class Plans {
   }
 
   addDays() {
-    console.log(processingData.getDateWithoutHour(workModeSelected.selected));
+    console.log(processingData.getDateWithoutHour(this.selected));
     isLoading.setLoading(IsLoadingEnum.pending);
     let year = new Date().getFullYear();
     let startIndex =
@@ -116,7 +108,7 @@ class Plans {
     timeEnd,
     id,
     isFinished,
-  }: IinfoPlan) {
+  }: IinfoPlan): boolean {
     toast
       .promise(
         db.updatePlans({
@@ -130,7 +122,7 @@ class Plans {
           id,
           isFinished,
         }),
-        { pending: 'Changing', error: 'Error of Change', success: 'Changed' },
+        changingPromise,
       )
       .then(() => {
         this.plans[processingData.toYearMont(date)][
@@ -141,9 +133,9 @@ class Plans {
     return false;
   }
 
-  get sortedArrInDate() {
-    let month = processingData.toYearMont(workModeSelected.selected);
-    let day = processingData.getDay(workModeSelected.selected);
+  get sortedArrInDate(): IinfoPlan[] {
+    let month = processingData.toYearMont(this.selected);
+    let day = processingData.getDay(this.selected);
     try {
       let arrOfValues: IinfoPlan[] = Object.values(this.plans[month][day]);
       return arrOfValues.sort((a, b) => {
@@ -158,27 +150,8 @@ class Plans {
     }
   }
 
-  importance(date: Date) {
-    let isNotImportant = false,
-      isImportant = false,
-      isVeryImportant = false;
-    const yearMonth = processingData.toYearMont(date);
-    const day = processingData.getDay(date);
-    if (this.plans[yearMonth]) {
-      if (this.plans[yearMonth][day]) {
-        isNotImportant = Object.values(this.plans[yearMonth][day]).some(
-          e => e.important === importance[0].value,
-        );
-        isImportant = Object.values(this.plans[yearMonth][day]).some(
-          e => e.important === importance[1].value,
-        );
-        isVeryImportant = Object.values(this.plans[yearMonth][day]).some(
-          e => e.important === importance[2].value,
-        );
-      }
-    }
-
-    return { isNotImportant, isImportant, isVeryImportant };
+  setSelected(date: Date) {
+    this.selected = date;
   }
 }
 export default new Plans();

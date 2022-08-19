@@ -8,7 +8,7 @@ import {
   MenuItem,
   TextField,
 } from '@mui/material';
-import { importance } from '../../constants';
+import { importance, textButtonEdit } from '../../constants';
 import { AddPlanType } from './AddPlan.type';
 import './AddPlan.css';
 import useAddPlan from '../../hooks/useAddPlan';
@@ -116,8 +116,7 @@ const AddPlan = memo(
         </CardContent>
         <CardActions className={'inputs'}>
           <Button onClick={addPlan}>
-            {defaultObj?.id && 'Save'}
-            {!defaultObj?.id && 'Add'}
+            {textButtonEdit[+!!defaultObj?.name]}
           </Button>
         </CardActions>
       </Card>
