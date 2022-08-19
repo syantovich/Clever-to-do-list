@@ -9,6 +9,7 @@ import { db } from '../../services/db';
 import { useDispatch, useSelector } from 'react-redux';
 import { userSelector } from '../../store/user/selector';
 import { deletePlan } from '../../store/plans/plansSlice';
+import processingDate from '../../helpers/ProcessingData';
 
 const ElementOfListPlans = ({
   id,
@@ -22,7 +23,9 @@ const ElementOfListPlans = ({
   isFinished,
   date,
 }: ElementOfListPlansType) => {
-  const disabled = isFinished || `${addingDate}T${timeEnd}` < date;
+  const disabled =
+    isFinished ||
+    `${processingDate.getDateWithoutHour(addingDate)}T${timeEnd}` < date;
   const { email } = useSelector(userSelector);
   const dispatch = useDispatch();
   return (

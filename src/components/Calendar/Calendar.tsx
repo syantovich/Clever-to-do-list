@@ -72,7 +72,12 @@ const Calendar = memo(() => {
       .then(result => {
         let res = result.data();
         if (res !== undefined) {
-          for (let day in res) copyPlans[key][day] = res[day];
+          for (let day in res) {
+            copyPlans[key][day] = res[day];
+            for (let id in res[day]) {
+              copyPlans[key][day][id].date = res[day][id].date.toDate();
+            }
+          }
         }
       })
       .finally(() => {
@@ -86,10 +91,11 @@ const Calendar = memo(() => {
   useEffect(() => {
     let arr: JSX.Element[] = [];
     for (let i = 0; i < days.length; i++) {
-      const day = days[i].getDate() - 1;
-      const month = days[i].getMonth();
+      const day = +processingData.getDay(days[i]);
+      const month = +processingData.getMonth(days[i]) - 1;
       const newYear = days[i].getFullYear();
       arr[i] = update(day, month, newYear);
+      console.log(processingData.getDateWithoutHour(days[i]));
     }
     setArrOfDays(arr);
   }, [selected]);

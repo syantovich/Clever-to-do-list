@@ -18,7 +18,6 @@ const useCheckingAuth = () => {
         }),
       );
       isUser = true;
-      dispatch(setLoading(IsLoadingEnum.success));
     });
   }, []);
   return isUser;
