@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { GraphsType } from './Graphs.type';
 import './Graphs.css';
 import processingData from '../../helpers/ProcessingData';
-import processingDate from '../../helpers/ProcessingData';
 
 const Graphs = ({ sortedList, setOpenedPlan }: GraphsType) => {
   const size = 1200 / 24;
@@ -58,7 +57,7 @@ const Graphs = ({ sortedList, setOpenedPlan }: GraphsType) => {
           }}
           className={`block_graphs ${e.important} ${
             e.isFinished ||
-            `${processingDate.getDateWithoutHour(e.date)}T${e.timeEnd}` <
+            `${processingData.getDateWithoutHour(e.date)}T${e.timeEnd}` <
               currentDate + 'T' + currentTime
               ? 'opacity_element'
               : ''

@@ -32,3 +32,5 @@ export function dayInWeek(
   let date = new Date(year, month, dayMonth);
   return DayOfWeek[date.getDay()];
 }
+export const paddingCalendar = 60;
+export const widthCalendarDay = 90;

@@ -14,17 +14,21 @@ export const usePlansToSortedArr = () => {
   const [arr, setArr] = useState<IinfoPlan[]>([]);
   useEffect(() => {
     if (isLoading === IsLoadingEnum.success) {
-      let month = processingData.toYearMont(selected);
-      let day = processingData.getDay(selected);
-      let arrOfValues: IinfoPlan[] = Object.values(plans[month][day]);
-      let sortedArr = arrOfValues.sort((a, b) => {
-        if (a.timeStart === b.timeStart) {
-          return b.timeEnd > a.timeEnd ? -1 : 1;
-        } else {
-          return b.timeStart > a.timeStart ? -1 : 1;
-        }
-      });
-      setArr(sortedArr);
+      try {
+        let month = processingData.toYearMont(selected);
+        let day = processingData.getDay(selected);
+        let arrOfValues: IinfoPlan[] = Object.values(plans[month][day]);
+        let sortedArr = arrOfValues.sort((a, b) => {
+          if (a.timeStart === b.timeStart) {
+            return b.timeEnd > a.timeEnd ? -1 : 1;
+          } else {
+            return b.timeStart > a.timeStart ? -1 : 1;
+          }
+        });
+        setArr(sortedArr);
+      } catch (e) {
+        setArr([]);
+      }
     }
   }, [selected, plans]);
   return arr;

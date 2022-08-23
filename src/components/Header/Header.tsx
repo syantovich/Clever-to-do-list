@@ -8,7 +8,7 @@ import ButtonLink from '../ButtonLink/ButtonLink';
 import ButtonSign from '../ButtonsSing/ButtonSign';
 
 const Header = () => {
-  const { name } = useSelector(userSelector);
+  const { email } = useSelector(userSelector);
   return (
     <header>
       <Grid
@@ -22,10 +22,10 @@ const Header = () => {
           <Logo />
         </Grid>
         <Grid item>
-          <ButtonLink to={name ? 'plans' : 'signin'}>Plans</ButtonLink>
+          <ButtonLink to={email ? 'plans' : 'signin'}>Plans</ButtonLink>
         </Grid>
         <Grid item>
-          {name ? (
+          {email ? (
             <ButtonLink to={'profile'}>Profile</ButtonLink>
           ) : (
             <ButtonSign />

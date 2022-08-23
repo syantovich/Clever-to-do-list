@@ -5,11 +5,11 @@ import { useDispatch } from 'react-redux';
 import { IsLoadingEnum, setLoading } from '../store/isLoading/isLoadingSlice';
 
 const useCheckingAuth = () => {
-  let isUser = false;
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(setLoading(IsLoadingEnum.pending));
     getAuth().onAuthStateChanged(result => {
+      console.log(result);
       dispatch(
         login({
           name: result?.displayName,
@@ -17,9 +17,7 @@ const useCheckingAuth = () => {
           uid: result?.uid,
         }),
       );
-      isUser = true;
     });
   }, []);
-  return isUser;
 };
 export default useCheckingAuth;

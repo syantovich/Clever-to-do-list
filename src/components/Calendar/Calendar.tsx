@@ -1,6 +1,12 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 import { Stack } from '@mui/material';
-import { currDayInMonth, dayInWeek, daysInMonth } from '../../constants';
+import {
+  currDayInMonth,
+  dayInWeek,
+  daysInMonth,
+  paddingCalendar,
+  widthCalendarDay,
+} from '../../constants';
 import CalendarDay from '../CalendarDay/CalendarDay';
 import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
@@ -22,6 +28,7 @@ const Calendar = memo(() => {
   const selected = useSelector(getSelected);
   const dispatch = useDispatch();
   let plans: IPlans = {};
+  const carouselRef = useRef<HTMLElement>(null);
 
   const [nextMonth, setNextMonth] = useState(new Date().getMonth());
   const [days, setDays] = useState<Date[]>([]);
@@ -44,6 +51,7 @@ const Calendar = memo(() => {
     );
   };
   const addDays = () => {
+    dispatch(setLoading(IsLoadingEnum.pending));
     let nextMonthArr: JSX.Element[] = [];
     const addingDays: Date[] = [];
     let year = new Date().getFullYear();
@@ -104,12 +112,31 @@ const Calendar = memo(() => {
     dispatch(setLoading(IsLoadingEnum.pending));
     addDays();
   }, []);
+  useEffect(() => {
+    if (
+      carouselRef.current &&
+      Math.floor(
+        (carouselRef.current.offsetWidth - paddingCalendar * 2) /
+          widthCalendarDay,
+      ) > arrOfDays.length
+    ) {
+      console.log(
+        Math.floor(
+          (carouselRef.current.offsetWidth - paddingCalendar * 2) /
+            widthCalendarDay,
+        ),
+        arrOfDays.length,
+      );
+      addDays();
+    }
+  }, [arrOfDays]);
   return (
     <Stack
       direction="row"
       spacing={2}
       height={100}
-      className={'calendar_wrapper'}>
+      className={'calendar_wrapper'}
+      ref={carouselRef}>
       <AliceCarousel
         autoWidth
         activeIndex={indexActive}
